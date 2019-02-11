@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Matthew Kuperus Heun" />
+
+<meta name="date" content="2019-02-05" />
+
+<title>A matsindf_apply primer</title>
+
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">A matsindf_apply primer</h1>
+<h4 class="author"><em>Matthew Kuperus Heun</em></h4>
+<h4 class="date"><em>2019-02-05</em></h4>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p><code>matsindf_apply</code> is a powerful and versatile function that enables analysis of data frames by applying <code>FUN</code> in helpful ways. The function is called <code>matsindf_apply</code>, because it can be used to apply <code>FUN</code> to a <code>matsindf</code> data frame, a data frame that contains matrices as individual entries in a data frame. (A <code>matsindf</code> data frame can be created by calling <code>collapse_to_matrices</code>, as demonstrated below.)</p>
+<p>But <code>matsindf_apply</code> can apply <code>FUN</code> across much more: data frames of single numbers, lists of matrices, lists of single numbers, and individual numbers. This vignette demonstrates <code>matsindf_apply</code>, starting with simple examples and proceeding to sophisticated analyses.</p>
+</div>
+<div id="the-basics" class="section level2">
+<h2>The basics</h2>
+<p>The basis of all analyses conducted with <code>matsindf_apply</code> is a function (<code>FUN</code>) to be applied across data. <code>FUN</code> must return a named list of variables, its result. Here is an example function that both adds and subtracts is arguments, <code>a</code> and <code>b</code> and returns a list containing its result, <code>c</code> and <code>d</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example_fun &lt;-<span class="st"> </span><span class="cf">function</span>(a, b){
+  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">c =</span> <span class="kw">sum_byname</span>(a, b), <span class="dt">d =</span> <span class="kw">difference_byname</span>(a, b)))
+}</code></pre></div>
+<p>Similar to <code>lapply</code> and its siblings, additional argument(s) to <code>matsindf_apply</code> include the data over which <code>FUN</code> is to be applied. These arguments can, in the first instance, be supplied as named arguments to the <code>...</code> argument of <code>matsindf_apply</code>. The <code>...</code> arguments to <code>matsindf_apply</code> are passed to <code>FUN</code> according to their names. In this case, the output of <code>matsindf_apply</code> is the the named list returned by <code>FUN</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matsindf_apply</span>(<span class="dt">FUN =</span> example_fun, <span class="dt">a =</span> <span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">1</span>)
+<span class="co">#&gt; $c</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $d</span>
+<span class="co">#&gt; [1] 1</span></code></pre></div>
+<p>Passing an additional argument (<code>z = 2</code>) causes the familiar <code>unused argument</code> error, because <code>example_fun</code> does not have a <code>z</code> argument.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tryCatch</span>(
+  <span class="kw">matsindf_apply</span>(<span class="dt">FUN =</span> example_fun, <span class="dt">a =</span> <span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">1</span>, <span class="dt">z =</span> <span class="dv">2</span>),
+  <span class="dt">error =</span> <span class="cf">function</span>(e){e}
+)
+<span class="co">#&gt; &lt;simpleError in FUN(...): unused argument (z = 2)&gt;</span></code></pre></div>
+<p>Failing to pass a needed argument (<code>b = 1</code>) causes the familiar <code>argument X is missing</code> error, because <code>example_fun</code> requires a value for <code>b</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tryCatch</span>(
+  <span class="kw">matsindf_apply</span>(<span class="dt">FUN =</span> example_fun, <span class="dt">a =</span> <span class="dv">2</span>),
+  <span class="dt">error =</span> <span class="cf">function</span>(e){e}
+)
+<span class="co">#&gt; &lt;simpleError in sum_byname(a, b): argument &quot;b&quot; is missing, with no default&gt;</span></code></pre></div>
+<p>(If <code>example_fun</code> tolerated a missing argument, no such error would be created.)</p>
+<p>Alternatively, arguments to <code>FUN</code> can be given in a named list to the first argument to <code>matsindf_apply</code> (<code>.dat</code>). When a value is assigned to <code>.dat</code>, the return value from <code>matsindf_apply</code> contains all named variables in <code>.dat</code> (in this case both <code>a</code> and <code>b</code>) in addition to the results provided by <code>FUN</code> (in this case both <code>c</code> and <code>d</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matsindf_apply</span>(<span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">1</span>), <span class="dt">FUN =</span> example_fun)
+<span class="co">#&gt; $a</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $b</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $c</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $d</span>
+<span class="co">#&gt; [1] 1</span></code></pre></div>
+<p>Extra variables are tolerated in <code>.dat</code>, because <code>.dat</code> is considered to be a store of data from which variables can be drawn as needed.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matsindf_apply</span>(<span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">1</span>, <span class="dt">z =</span> <span class="dv">42</span>), <span class="dt">FUN =</span> example_fun)
+<span class="co">#&gt; $a</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $b</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $z</span>
+<span class="co">#&gt; [1] 42</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $c</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $d</span>
+<span class="co">#&gt; [1] 1</span></code></pre></div>
+<p>In contrast, named arguments to <code>...</code> are specified by the user, so including an extra variable is considered an error, as shown above.</p>
+</div>
+<div id="some-details" class="section level2">
+<h2>Some details</h2>
+<p>If a named argument is supplied by both <code>.dat</code> and <code>...</code>, the argument in <code>...</code> takes precedence, overriding the argument in <code>.dat</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matsindf_apply</span>(<span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">1</span>), <span class="dt">FUN =</span> example_fun, <span class="dt">a =</span> <span class="dv">10</span>)
+<span class="co">#&gt; $a</span>
+<span class="co">#&gt; [1] 10</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $b</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $c</span>
+<span class="co">#&gt; [1] 11</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $d</span>
+<span class="co">#&gt; [1] 9</span></code></pre></div>
+<p>When supplying <strong>both</strong> <code>.dat</code> and <code>...</code>, <code>...</code> can contain named strings which are interpreted as mappings from item names in <code>.dat</code> to arguments in the signature of <code>FUN</code>. In the example below, <code>a = &quot;z&quot;</code> indicates that argument <code>a</code> to <code>FUN</code> should be supplied by item <code>z</code> in <code>.dat</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matsindf_apply</span>(<span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">1</span>, <span class="dt">z =</span> <span class="dv">42</span>),
+               <span class="dt">FUN =</span> example_fun, <span class="dt">a =</span> <span class="st">&quot;z&quot;</span>)
+<span class="co">#&gt; $a</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $b</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $z</span>
+<span class="co">#&gt; [1] 42</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $c</span>
+<span class="co">#&gt; [1] 43</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $d</span>
+<span class="co">#&gt; [1] 41</span></code></pre></div>
+<p>If a named argument appears in both <code>.dat</code> and the output of <code>FUN</code>, a name collision occurs in the output of <code>matsindf_apply</code>, and a warning is issued.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tryCatch</span>(
+  <span class="kw">matsindf_apply</span>(<span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">1</span>, <span class="dt">c =</span> <span class="dv">42</span>), <span class="dt">FUN =</span> example_fun),
+  <span class="dt">warning =</span> <span class="cf">function</span>(w){w}
+)
+<span class="co">#&gt; &lt;simpleWarning in matsindf_apply(list(a = 2, b = 1, c = 42), FUN = example_fun): name collision in matsindf_apply: c&gt;</span></code></pre></div>
+</div>
+<div id="matsindf_apply-and-data-frames" class="section level2">
+<h2>matsindf_apply and data frames</h2>
+<p><code>.dat</code> can be a list (as shown in several examples above), but it can also be a data frame.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">a =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">b =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)
+<span class="kw">matsindf_apply</span>(df, <span class="dt">FUN =</span> example_fun)
+<span class="co">#&gt;   a b c d</span>
+<span class="co">#&gt; 1 2 1 3 1</span>
+<span class="co">#&gt; 2 3 2 5 1</span>
+<span class="co">#&gt; 3 4 3 7 1</span></code></pre></div>
+<p>Furthermore, <code>matsindf_apply</code> works with a <code>matsindf</code> data frame, a data frame wherein each entry in the data frame is a matrix. To demonstrate use of <code>matsindf_apply</code> with a data frame, we’ll construct a simple <code>matsindf</code> data frame (<code>midf</code>) using functions in this package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a tidy data frame containing data for matrices</span>
+tidy &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Year =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">2017</span>, <span class="dv">4</span>), <span class="kw">rep</span>(<span class="dv">2018</span>, <span class="dv">4</span>)), <span class="dv">2</span>),
+                   <span class="dt">matnames =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;U&quot;</span>, <span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&quot;V&quot;</span>, <span class="dv">8</span>)),
+                   <span class="dt">matvals =</span> <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dv">11</span><span class="op">:</span><span class="dv">14</span>, <span class="dv">21</span><span class="op">:</span><span class="dv">24</span>, <span class="dv">31</span><span class="op">:</span><span class="dv">34</span>),
+                   <span class="dt">rownames =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;p1&quot;</span>, <span class="dv">2</span>), <span class="kw">rep</span>(<span class="st">&quot;p2&quot;</span>, <span class="dv">2</span>)), <span class="dv">2</span>), 
+                                <span class="kw">rep</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;i1&quot;</span>, <span class="dv">2</span>), <span class="kw">rep</span>(<span class="st">&quot;i2&quot;</span>, <span class="dv">2</span>)), <span class="dv">2</span>)),
+                   <span class="dt">colnames =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;i1&quot;</span>, <span class="st">&quot;i2&quot;</span>), <span class="dv">4</span>), 
+                                <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;p1&quot;</span>, <span class="st">&quot;p2&quot;</span>), <span class="dv">4</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="dt">rowtypes =</span> <span class="kw">case_when</span>(
+      matnames <span class="op">==</span><span class="st"> &quot;U&quot;</span> <span class="op">~</span><span class="st"> &quot;product&quot;</span>,
+      matnames <span class="op">==</span><span class="st"> &quot;V&quot;</span> <span class="op">~</span><span class="st"> &quot;industry&quot;</span>, 
+      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>
+    ),
+    <span class="dt">coltypes =</span> <span class="kw">case_when</span>(
+      matnames <span class="op">==</span><span class="st"> &quot;U&quot;</span> <span class="op">~</span><span class="st"> &quot;industry&quot;</span>,
+      matnames <span class="op">==</span><span class="st"> &quot;V&quot;</span> <span class="op">~</span><span class="st"> &quot;product&quot;</span>,
+      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>
+    )
+  )
+
+tidy
+<span class="co">#&gt;    Year matnames matvals rownames colnames rowtypes coltypes</span>
+<span class="co">#&gt; 1  2017        U       1       p1       i1  product industry</span>
+<span class="co">#&gt; 2  2017        U       2       p1       i2  product industry</span>
+<span class="co">#&gt; 3  2017        U       3       p2       i1  product industry</span>
+<span class="co">#&gt; 4  2017        U       4       p2       i2  product industry</span>
+<span class="co">#&gt; 5  2018        U      11       p1       i1  product industry</span>
+<span class="co">#&gt; 6  2018        U      12       p1       i2  product industry</span>
+<span class="co">#&gt; 7  2018        U      13       p2       i1  product industry</span>
+<span class="co">#&gt; 8  2018        U      14       p2       i2  product industry</span>
+<span class="co">#&gt; 9  2017        V      21       i1       p1 industry  product</span>
+<span class="co">#&gt; 10 2017        V      22       i1       p2 industry  product</span>
+<span class="co">#&gt; 11 2017        V      23       i2       p1 industry  product</span>
+<span class="co">#&gt; 12 2017        V      24       i2       p2 industry  product</span>
+<span class="co">#&gt; 13 2018        V      31       i1       p1 industry  product</span>
+<span class="co">#&gt; 14 2018        V      32       i1       p2 industry  product</span>
+<span class="co">#&gt; 15 2018        V      33       i2       p1 industry  product</span>
+<span class="co">#&gt; 16 2018        V      34       i2       p2 industry  product</span>
+
+<span class="co"># Convert to a matsindf data frame</span>
+midf &lt;-<span class="st"> </span>tidy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Year, matnames) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">collapse_to_matrices</span>(<span class="dt">rowtypes =</span> <span class="st">&quot;rowtypes&quot;</span>, <span class="dt">coltypes =</span> <span class="st">&quot;coltypes&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(<span class="dt">key =</span> <span class="st">&quot;matnames&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;matvals&quot;</span>)
+
+<span class="co"># Take a look at the midf data frame and some of the matrices it contains.</span>
+midf
+<span class="co">#&gt;   Year              U              V</span>
+<span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24</span>
+<span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34</span>
+midf<span class="op">$</span>U[[<span class="dv">1</span>]]
+<span class="co">#&gt;    i1 i2</span>
+<span class="co">#&gt; p1  1  2</span>
+<span class="co">#&gt; p2  3  4</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;product&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;industry&quot;</span>
+midf<span class="op">$</span>V[[<span class="dv">1</span>]]
+<span class="co">#&gt;    p1 p2</span>
+<span class="co">#&gt; i1 21 22</span>
+<span class="co">#&gt; i2 23 24</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;industry&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;product&quot;</span></code></pre></div>
+<p>With <code>midf</code> in hand, we can demonstrate use of <a href="http://www.tidyverse.org"><code>tidyverse</code></a>-style functional programming to perform matrix algebra within a data frame. The functions of the <code>matsbyname</code> package (such as <code>difference_byname</code> below) can be used for this purpose.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">result &lt;-<span class="st"> </span>midf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="dt">W =</span> <span class="kw">difference_byname</span>(<span class="kw">transpose_byname</span>(V), U)
+  )
+result
+<span class="co">#&gt;   Year              U              V              W</span>
+<span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span>
+<span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span>
+result<span class="op">$</span>W[[<span class="dv">1</span>]]
+<span class="co">#&gt;    i1 i2</span>
+<span class="co">#&gt; p1 20 21</span>
+<span class="co">#&gt; p2 19 20</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;product&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;industry&quot;</span>
+result<span class="op">$</span>W[[<span class="dv">2</span>]]
+<span class="co">#&gt;    i1 i2</span>
+<span class="co">#&gt; p1 20 21</span>
+<span class="co">#&gt; p2 19 20</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;product&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;industry&quot;</span></code></pre></div>
+<p>This way of performing matrix calculations works equally well within a 2-row <code>matsindf</code> data frame (as shown above) or a 1000-row <code>matsindf</code> data frame.</p>
+</div>
+<div id="programming-with-matsindf_apply" class="section level2">
+<h2>Programming with matsindf_apply</h2>
+<p>Users can write their own functions using <code>matsindf_apply</code>. A flexible <code>calc_W</code> function can be written as follows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calc_W &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">.DF =</span> <span class="ot">NULL</span>, <span class="dt">U =</span> <span class="st">&quot;U&quot;</span>, <span class="dt">V =</span> <span class="st">&quot;V&quot;</span>, <span class="dt">W =</span> <span class="st">&quot;W&quot;</span>){
+  <span class="co"># The inner function does all the work.</span>
+  W_func &lt;-<span class="st"> </span><span class="cf">function</span>(U_mat, V_mat){
+    <span class="co"># When we get here, U_mat and V_mat will be single matrices or single numbers, </span>
+    <span class="co"># not a column in a data frame or an item in a list.</span>
+    <span class="co"># Calculate W_mat from the inputs U_mat and V_mat.</span>
+    W_mat &lt;-<span class="st"> </span><span class="kw">difference_byname</span>(<span class="kw">transpose_byname</span>(V_mat), U_mat)
+    <span class="co"># Return a named list.</span>
+    <span class="kw">list</span>(W_mat) <span class="op">%&gt;%</span><span class="st"> </span>magrittr<span class="op">::</span><span class="kw">set_names</span>(W)
+  }
+  <span class="co"># The body of the main function consists of a call to matsindf_apply</span>
+  <span class="co"># that specifies the inner function</span>
+  <span class="kw">matsindf_apply</span>(.DF, <span class="dt">FUN =</span> W_func, <span class="dt">U_mat =</span> U, <span class="dt">V_mat =</span> V)
+}</code></pre></div>
+<p>This style of writing <code>matsindf_apply</code> functions is incredibly versatile, leveraging the capabilities of both the <code>matsindf</code> and <code>matsbyname</code> packages. (Indeed, the <code>Recca</code> package uses <code>matsindf_apply</code> heavily and is built upon the functions in the <code>matsindf</code> and <code>matsbyname</code> packages.)</p>
+<p>Functions written like <code>calc_W</code> can operate in ways similar to <code>matsindf_apply</code> itself. To demonstrate, we’ll use <code>calc_W</code> in all the ways that <code>matsindf_apply</code> can be used, going in the reverse order to our demonstration of the capabilities of <code>matsindf_apply</code> above.</p>
+<p><code>calc_W</code> can be used as a specialized <code>mutate</code> function that operates on <code>matsindf</code> data frames.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">midf <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">calc_W</span>()
+<span class="co">#&gt;   Year              U              V              W</span>
+<span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span>
+<span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></code></pre></div>
+<p>The added column could be given a different name from the default (“<code>W</code>”) using the <code>W</code> argument.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">midf <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">calc_W</span>(<span class="dt">W =</span> <span class="st">&quot;W_prime&quot;</span>)
+<span class="co">#&gt;   Year              U              V        W_prime</span>
+<span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span>
+<span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></code></pre></div>
+<p>As with <code>matsindf_apply</code>, column names in <code>midf</code> can be mapped to the arguments of <code>calc_W</code> by the arguments to <code>calc_W</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">midf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">rename</span>(<span class="dt">X =</span> U, <span class="dt">Y =</span> V) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">calc_W</span>(<span class="dt">U =</span> <span class="st">&quot;X&quot;</span>, <span class="dt">V =</span> <span class="st">&quot;Y&quot;</span>)
+<span class="co">#&gt;   Year              X              Y              W</span>
+<span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span>
+<span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></code></pre></div>
+<p><code>calc_W</code> can operate on lists of single matrices, too. This approach works, because the default values for the <code>U</code> and <code>V</code> arguments to <code>calc_W</code> are “<code>U</code>” and “<code>V</code>”, respectively. The input list members (in this case <code>midf$U[[1]]</code> and <code>midf$V[[1]]</code>) are returned with the output.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calc_W</span>(<span class="kw">list</span>(<span class="dt">U =</span> midf<span class="op">$</span>U[[<span class="dv">1</span>]], <span class="dt">V =</span> midf<span class="op">$</span>V[[<span class="dv">1</span>]]))
+<span class="co">#&gt; $U</span>
+<span class="co">#&gt;    i1 i2</span>
+<span class="co">#&gt; p1  1  2</span>
+<span class="co">#&gt; p2  3  4</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;product&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;industry&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $V</span>
+<span class="co">#&gt;    p1 p2</span>
+<span class="co">#&gt; i1 21 22</span>
+<span class="co">#&gt; i2 23 24</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;industry&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;product&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $W</span>
+<span class="co">#&gt;    i1 i2</span>
+<span class="co">#&gt; p1 20 21</span>
+<span class="co">#&gt; p2 19 20</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;product&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;industry&quot;</span></code></pre></div>
+<p>It may be clearer to name the arguments as required by the <code>calc_W</code> function without wrapping in a list first, as shown below. But in this approach, the input matrices are not returned with the output.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calc_W</span>(<span class="dt">U =</span> midf<span class="op">$</span>U[[<span class="dv">1</span>]], <span class="dt">V =</span> midf<span class="op">$</span>V[[<span class="dv">1</span>]])
+<span class="co">#&gt; $W</span>
+<span class="co">#&gt;    i1 i2</span>
+<span class="co">#&gt; p1 20 21</span>
+<span class="co">#&gt; p2 19 20</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;product&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;industry&quot;</span></code></pre></div>
+<p><code>calc_W</code> can operate on data frames containing single numbers.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data.frame</span>(<span class="dt">U =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">V =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">4</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">calc_W</span>()
+<span class="co">#&gt;   U V W</span>
+<span class="co">#&gt; 1 1 3 2</span>
+<span class="co">#&gt; 2 2 4 2</span></code></pre></div>
+<p>Finally, <code>calc_W</code> can be applied to single numbers, and the result is 1x1 matrix.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calc_W</span>(<span class="dt">U =</span> <span class="dv">2</span>, <span class="dt">V =</span> <span class="dv">3</span>)
+<span class="co">#&gt; $W</span>
+<span class="co">#&gt;      [,1]</span>
+<span class="co">#&gt; [1,]    1</span></code></pre></div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>This vignette demonstrated use of the versatile <code>matsindf_apply</code> function. Inputs to <code>matsindf_apply</code> can be</p>
+<ul>
+<li>single numbers,</li>
+<li>matrices, or</li>
+<li>data frames with appropriately-named columns.</li>
+</ul>
+<p><code>matsindf_apply</code> can be used for programming, and functions constructed as demonstrated above share characteristics with <code>matsindf_apply</code>:</p>
+<ul>
+<li>they can be used as specialized <code>mutate</code> operators, and</li>
+<li>they can be applied to single numbers, matrices, or data frames with appropriately-named columns.</li>
+</ul>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

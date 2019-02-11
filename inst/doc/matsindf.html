@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Matthew Kuperus Heun" />
+
+<meta name="date" content="2019-02-05" />
+
+<title>Use Cases and Examples for matsindf</title>
+
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Use Cases and Examples for <code>matsindf</code></h1>
+<h4 class="author"><em>Matthew Kuperus Heun</em></h4>
+<h4 class="date"><em>2019-02-05</em></h4>
+
+
+
+<!-- Establish some helpful LaTeX shortcuts for equations -->
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Matrices are important mathematical objects, and they often describe networks of flows among nodes. Example networks are given in the following table.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">System type</th>
+<th align="left">Flows</th>
+<th align="left">Nodes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ecological</td>
+<td align="left">nutrients</td>
+<td align="left">organisms</td>
+</tr>
+<tr class="even">
+<td align="left">Manufacturing</td>
+<td align="left">materials</td>
+<td align="left">factories</td>
+</tr>
+<tr class="odd">
+<td align="left">Economic</td>
+<td align="left">money</td>
+<td align="left">economic sectors</td>
+</tr>
+</tbody>
+</table>
+<p>The power of matrices lies in their ability to organize network-wide calculations, thereby simplifying the work of analysts who study entire systems.</p>
+<p>But <a href="https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice">wouldn’t it be nice</a> if there were an easy way to create data frames whose entries were not numbers but entire matrices? If that were possible, matrix algebra could be performed on columns of similar matrices.</p>
+<p>That’s the reason for <code>matsindf</code>. It provides functions to convert a suitably-formatted <a href="http://tidyr.tidyverse.org/articles/tidy-data.html">tidy</a> data frame into a data frame containing a column of matrices.</p>
+<p>Furthermore, <code>matsbyname</code> is a sister package that …</p>
+<ul>
+<li>… provides matrix algebra functions that respect names of matrix rows and columns (<code>dimnames</code> in <code>R</code>) to free the analyst from the task of aligning rows and columns of operands (matrices) passed to matrix algebra functions and</li>
+<li>… allows matrix algebra to be conducted within data frames using <a href="http://dplyr.tidyverse.org">dplyr</a>, <a href="http://tidyr.tidyverse.org">tidyr</a>, and other <a href="http://www.tidyverse.org">tidyverse</a> functions.</li>
+</ul>
+<p>When used together, <code>matsindf</code> and <code>matsbyname</code> allow analysts to wield simultaneously the power of both <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)">matrix mathematics</a> and <a href="http://www.tidyverse.org">tidyverse</a> functional programming.</p>
+<p>This vignette demonstrates the use of these packages and suggests a workflow to accomplish sophisticated analyses using <em>matrices in data frames</em> (<code>matsindf</code>).</p>
+</div>
+<div id="data-ukenergy2000" class="section level2">
+<h2>Data: <code>UKEnergy2000</code></h2>
+<p>To demonstrate the use of <code>matsindf</code> functions, consider a network of energy flows from the environment, through transformation and distribution processes, and, ultimately, to final demand. Such energy flow networks are called energy conversion chains (ECCs), and this example is based on an approximation to a portion of the UK’s ECC circa 2000. (Note that these data are to be used for demonstration purposes only and have been rounded to 1–2 significant digits.) These example data first appeared in Figures 3 and 4 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(UKEnergy2000, <span class="dv">2</span>)
+<span class="co">#&gt;   Country Year Ledger.side      Flow.aggregation.point              Flow</span>
+<span class="co">#&gt; 1      GB 2000      Supply Total primary energy supply Resources - Crude</span>
+<span class="co">#&gt; 2      GB 2000      Supply Total primary energy supply    Resources - NG</span>
+<span class="co">#&gt;   Product E.ktoe</span>
+<span class="co">#&gt; 1   Crude  50000</span>
+<span class="co">#&gt; 2      NG  43000</span></code></pre></div>
+<p><code>Country</code> and <code>Year</code> contain only one value each, <code>GB</code> and <code>2000</code> respectively. Following conventions of the <a href="http://www.iea.org">International Energy Agency</a>’s <a href="http://www.iea.org/statistics/relateddatabases/worldenergystatisticsandbalances/">energy balance tables</a>,</p>
+<ul>
+<li><code>Ledger.side</code> indicates <code>Supply</code> or <code>Consumption</code>;</li>
+<li><code>Flow.aggregation.point</code> indicates how data are to be aggregated;</li>
+<li><code>Flow</code> indicates the industry, machine, or final demand sector for this flow;</li>
+<li><code>Product</code> indicates the energy carrier for this flow; and</li>
+<li><code>E.ktoe</code> gives the magnitude of this flow in <a href="https://www.iea.org/statistics/resources/unitconverter/">units</a> of kilotons of oil equivalent (ktoe).</li>
+</ul>
+<p>Each flow is its own observation (its own row) in the <code>UKEnergy2000</code> data frame, making it <a href="http://tidyr.tidyverse.org/articles/tidy-data.html">tidy</a>.</p>
+<p>The remainder of this vignette demonstrates an analysis conducted using the <code>UKEnergy2000</code> data frame as a basis. It:</p>
+<ul>
+<li>shows how to <em>collapse</em> and spread the data into appropriate matrices stored in columns of a data frame,</li>
+<li>demonstrates analyzing the matrices with <code>matsbyname</code> functions,</li>
+<li>illustrates <em>expand</em>ing the matrices back into a tidy data frame, and</li>
+<li>uses <a href="http://ggplot2.tidyverse.org">ggplot</a> to graph the results.</li>
+</ul>
+</div>
+<div id="suggested-workflow" class="section level2">
+<h2>Suggested workflow</h2>
+<div id="prepare-for-collapse" class="section level3">
+<h3>Prepare for <em>collapse</em></h3>
+<p>The <code>EnergyUK2000</code> data frame is similar to “cleaned” data from an external source: there are no missing entries, and it is <a href="http://tidyr.tidyverse.org/articles/tidy-data.html">tidy</a>. But the data are not organized as matrices, and additional metadata is needed.</p>
+<p>The <code>collapse_to_matrices</code> function converts a tidy data frame into a <code>matsindf</code> data frame using using information within the tidy data frame. So the first task is to prepare for <em>collapse</em> by adding metadata columns.</p>
+<p><code>collapse_to_matrices</code> needs the following information:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">argument to <code>collapse_to_matrices</code></th>
+<th align="left">identifies</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right"><code>matnames</code></td>
+<td align="left">Name of the input column of matrix names</td>
+</tr>
+<tr class="even">
+<td align="right"><code>values</code></td>
+<td align="left">Name of the input column of matrix entries</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>rownames</code></td>
+<td align="left">Name of the input column of matrix row names</td>
+</tr>
+<tr class="even">
+<td align="right"><code>colnames</code></td>
+<td align="left">Name of the input column of matrix column name</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>rowtypes</code></td>
+<td align="left">Optional name of the input column of matrix row types</td>
+</tr>
+<tr class="even">
+<td align="right"><code>coltypes</code></td>
+<td align="left">Optional name of the input column of matrix column types</td>
+</tr>
+</tbody>
+</table>
+<p>The following code gives the approach to adding metadata, appropriate for this application, relying on <code>Ledger.side</code>, the sign of <code>E.ktoe</code>, and knowledge about the rows and columns for each matrix. Each type of network will have its own algorithm for identifying row names, column names, row types, and column types in a tidy data frame.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">UKEnergy2000_with_metadata &lt;-<span class="st"> </span>UKEnergy2000 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="co"># Add a column indicating the matrix in which this entry belongs (U, V, or Y).</span>
+<span class="st">  </span>matsindf<span class="op">:::</span><span class="kw">add_UKEnergy2000_matnames</span>(.) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="co"># Add columns for row names, column names, row types, and column types.</span>
+<span class="st">  </span>matsindf<span class="op">:::</span><span class="kw">add_UKEnergy2000_row_col_meta</span>(.) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="co"># Eliminate columns we no longer need</span>
+    <span class="dt">Ledger.side =</span> <span class="ot">NULL</span>,
+    <span class="dt">Flow.aggregation.point =</span> <span class="ot">NULL</span>,
+    <span class="dt">Flow =</span> <span class="ot">NULL</span>,
+    <span class="dt">Product =</span> <span class="ot">NULL</span>, 
+    <span class="co"># Ensure that all energy values are positive, as required for analysis.</span>
+    <span class="dt">E.ktoe =</span> <span class="kw">abs</span>(E.ktoe)
+  )
+<span class="kw">head</span>(UKEnergy2000_with_metadata, <span class="dv">2</span>)
+<span class="co">#&gt;   Country Year E.ktoe matname           rowname colname  rowtype coltype</span>
+<span class="co">#&gt; 1      GB 2000  50000       V Resources - Crude   Crude Industry Product</span>
+<span class="co">#&gt; 2      GB 2000  43000       V    Resources - NG      NG Industry Product</span></code></pre></div>
+</div>
+<div id="collapse" class="section level3">
+<h3>Collapse</h3>
+<p>With the metadata now in place, <code>UKEnergy2000_with_metadata</code> can be collapsed to a <code>matsindf</code> data frame by the <code>collapse_to_matrices</code> function. Much like <code>dplyr::summarise</code>, <code>collapse_to_matrices</code> relies on grouping to indicate which rows of the tidy data frame belong to which matrices. The usual approach is to <code>tidyr::group_by</code> the <code>matnames</code> column and any other columns to be preserved in the output, in this case <code>Country</code> and <code>Year</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">EnergyMats_<span class="dv">2000</span> &lt;-<span class="st"> </span>UKEnergy2000_with_metadata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Country, Year, matname) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">collapse_to_matrices</span>(<span class="dt">matnames =</span> <span class="st">&quot;matname&quot;</span>, <span class="dt">matvals =</span> <span class="st">&quot;E.ktoe&quot;</span>,
+                       <span class="dt">rownames =</span> <span class="st">&quot;rowname&quot;</span>, <span class="dt">colnames =</span> <span class="st">&quot;colname&quot;</span>, 
+                       <span class="dt">rowtypes =</span> <span class="st">&quot;rowtype&quot;</span>, <span class="dt">coltypes =</span> <span class="st">&quot;coltype&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">rename</span>(<span class="dt">matrix.name =</span> matname, <span class="dt">matrix =</span> E.ktoe)
+
+<span class="co"># The remaining columns are Country, Year, matrix.name, and matrix</span>
+<span class="kw">glimpse</span>(EnergyMats_<span class="dv">2000</span>)
+<span class="co">#&gt; Observations: 3</span>
+<span class="co">#&gt; Variables: 4</span>
+<span class="co">#&gt; $ Country     &lt;chr&gt; &quot;GB&quot;, &quot;GB&quot;, &quot;GB&quot;</span>
+<span class="co">#&gt; $ Year        &lt;int&gt; 2000, 2000, 2000</span>
+<span class="co">#&gt; $ matrix.name &lt;chr&gt; &quot;U&quot;, &quot;V&quot;, &quot;Y&quot;</span>
+<span class="co">#&gt; $ matrix      &lt;list&gt; [&lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 12]&gt;, &lt;matrix[4 x 2…</span>
+
+<span class="co"># To access one of the matrices, try one of these approaches:</span>
+(EnergyMats_<span class="dv">2000</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(matrix.name <span class="op">==</span><span class="st"> &quot;U&quot;</span>))[[<span class="st">&quot;matrix&quot;</span>]] <span class="co"># The U matrix</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt;                Crude dist. Diesel dist. Elect. grid Gas wells &amp; proc.</span>
+<span class="co">#&gt; Crude                    0            0           0                 0</span>
+<span class="co">#&gt; Crude - Dist.            0            0           0                 0</span>
+<span class="co">#&gt; Crude - Fields       47500            0           0                 0</span>
+<span class="co">#&gt; Diesel                   0        15500           0                 0</span>
+<span class="co">#&gt; Diesel - Dist.          25            0           0                50</span>
+<span class="co">#&gt; Elect                    0            0        6400                 0</span>
+<span class="co">#&gt; Elect - Grid            25            0           0                25</span>
+<span class="co">#&gt; NG                       0            0           0             43000</span>
+<span class="co">#&gt; NG - Dist.               0            0           0                 0</span>
+<span class="co">#&gt; NG - Wells               0            0           0                 0</span>
+<span class="co">#&gt; Petrol                   0            0           0                 0</span>
+<span class="co">#&gt;                NG dist. Oil fields Oil refineries Petrol dist.</span>
+<span class="co">#&gt; Crude                 0      50000              0            0</span>
+<span class="co">#&gt; Crude - Dist.         0          0          47000            0</span>
+<span class="co">#&gt; Crude - Fields        0          0              0            0</span>
+<span class="co">#&gt; Diesel                0          0              0            0</span>
+<span class="co">#&gt; Diesel - Dist.       25         50              0          250</span>
+<span class="co">#&gt; Elect                 0          0              0            0</span>
+<span class="co">#&gt; Elect - Grid         25         25             75            0</span>
+<span class="co">#&gt; NG                    0          0              0            0</span>
+<span class="co">#&gt; NG - Dist.            0          0              0            0</span>
+<span class="co">#&gt; NG - Wells        41000          0              0            0</span>
+<span class="co">#&gt; Petrol                0          0              0        26500</span>
+<span class="co">#&gt;                Power plants</span>
+<span class="co">#&gt; Crude                     0</span>
+<span class="co">#&gt; Crude - Dist.             0</span>
+<span class="co">#&gt; Crude - Fields            0</span>
+<span class="co">#&gt; Diesel                    0</span>
+<span class="co">#&gt; Diesel - Dist.            0</span>
+<span class="co">#&gt; Elect                     0</span>
+<span class="co">#&gt; Elect - Grid            100</span>
+<span class="co">#&gt; NG                        0</span>
+<span class="co">#&gt; NG - Dist.            16000</span>
+<span class="co">#&gt; NG - Wells                0</span>
+<span class="co">#&gt; Petrol                    0</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;Product&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;Industry&quot;</span>
+
+EnergyMats_<span class="dv">2000</span><span class="op">$</span>matrix[[<span class="dv">2</span>]] <span class="co"># The V matrix</span>
+<span class="co">#&gt;                   Crude Crude - Dist. Crude - Fields Diesel Diesel - Dist.</span>
+<span class="co">#&gt; Crude dist.           0         47000              0      0              0</span>
+<span class="co">#&gt; Diesel dist.          0             0              0      0          15150</span>
+<span class="co">#&gt; Elect. grid           0             0              0      0              0</span>
+<span class="co">#&gt; Gas wells &amp; proc.     0             0              0      0              0</span>
+<span class="co">#&gt; NG dist.              0             0              0      0              0</span>
+<span class="co">#&gt; Oil fields            0             0          47500      0              0</span>
+<span class="co">#&gt; Oil refineries        0             0              0  15500              0</span>
+<span class="co">#&gt; Petrol dist.          0             0              0      0              0</span>
+<span class="co">#&gt; Power plants          0             0              0      0              0</span>
+<span class="co">#&gt; Resources - Crude 50000             0              0      0              0</span>
+<span class="co">#&gt; Resources - NG        0             0              0      0              0</span>
+<span class="co">#&gt;                   Elect Elect - Grid    NG NG - Dist. NG - Wells Petrol</span>
+<span class="co">#&gt; Crude dist.           0            0     0          0          0      0</span>
+<span class="co">#&gt; Diesel dist.          0            0     0          0          0      0</span>
+<span class="co">#&gt; Elect. grid           0         6275     0          0          0      0</span>
+<span class="co">#&gt; Gas wells &amp; proc.     0            0     0          0      41000      0</span>
+<span class="co">#&gt; NG dist.              0            0     0      41000          0      0</span>
+<span class="co">#&gt; Oil fields            0            0     0          0          0      0</span>
+<span class="co">#&gt; Oil refineries        0            0     0          0          0  26500</span>
+<span class="co">#&gt; Petrol dist.          0            0     0          0          0      0</span>
+<span class="co">#&gt; Power plants       6400            0     0          0          0      0</span>
+<span class="co">#&gt; Resources - Crude     0            0     0          0          0      0</span>
+<span class="co">#&gt; Resources - NG        0            0 43000          0          0      0</span>
+<span class="co">#&gt;                   Petrol - Dist.</span>
+<span class="co">#&gt; Crude dist.                    0</span>
+<span class="co">#&gt; Diesel dist.                   0</span>
+<span class="co">#&gt; Elect. grid                    0</span>
+<span class="co">#&gt; Gas wells &amp; proc.              0</span>
+<span class="co">#&gt; NG dist.                       0</span>
+<span class="co">#&gt; Oil fields                     0</span>
+<span class="co">#&gt; Oil refineries                 0</span>
+<span class="co">#&gt; Petrol dist.               26000</span>
+<span class="co">#&gt; Power plants                   0</span>
+<span class="co">#&gt; Resources - Crude              0</span>
+<span class="co">#&gt; Resources - NG                 0</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;Industry&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;Product&quot;</span>
+
+EnergyMats_<span class="dv">2000</span><span class="op">$</span>matrix[[<span class="dv">3</span>]] <span class="co"># The Y matrix</span>
+<span class="co">#&gt;                Residential Transport</span>
+<span class="co">#&gt; Diesel - Dist.           0     14750</span>
+<span class="co">#&gt; Elect - Grid          6000         0</span>
+<span class="co">#&gt; NG - Dist.           25000         0</span>
+<span class="co">#&gt; Petrol - Dist.           0     26000</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;Product&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;Sector&quot;</span></code></pre></div>
+</div>
+<div id="duplicate-for-purposes-of-illustration" class="section level3">
+<h3>Duplicate (for purposes of illustration)</h3>
+<p>Larger studies will include data for multiple countries and years. The ECC data from UK in year <code>2000</code> can be duplicated for <code>2001</code> and for a fictitious country <code>AB</code>. Although the data are unchanged, the additional rows serve to illustrate the functional programming aspects of the <code>matsindf</code> and <code>matsbyname</code> packages.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Energy &lt;-<span class="st"> </span>EnergyMats_<span class="dv">2000</span> <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="co"># Create rows for a fictitious country &quot;AB&quot;.</span>
+<span class="st">  </span><span class="co"># Although the rows for &quot;AB&quot; are same as the &quot;GB&quot; rows,</span>
+<span class="st">  </span><span class="co"># they serve to illustrate functional programming with matsindf.</span>
+<span class="st">  </span><span class="kw">rbind</span>(EnergyMats_<span class="dv">2000</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Country =</span> <span class="st">&quot;AB&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(<span class="dt">key =</span> Year, <span class="dt">value =</span> matrix) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="co"># Create a column for a second year (2001).</span>
+    <span class="st">`</span><span class="dt">2001</span><span class="st">`</span> =<span class="st"> `</span><span class="dt">2000</span><span class="st">`</span>
+  ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> Year, <span class="dt">value =</span> matrix, <span class="st">`</span><span class="dt">2000</span><span class="st">`</span>, <span class="st">`</span><span class="dt">2001</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="co"># Now spread to put each matrix in a column.</span>
+<span class="st">  </span><span class="kw">spread</span>(<span class="dt">key =</span> matrix.name, <span class="dt">value =</span> matrix)
+
+<span class="kw">glimpse</span>(Energy)
+<span class="co">#&gt; Observations: 4</span>
+<span class="co">#&gt; Variables: 5</span>
+<span class="co">#&gt; $ Country &lt;chr&gt; &quot;AB&quot;, &quot;AB&quot;, &quot;GB&quot;, &quot;GB&quot;</span>
+<span class="co">#&gt; $ Year    &lt;chr&gt; &quot;2000&quot;, &quot;2001&quot;, &quot;2000&quot;, &quot;2001&quot;</span>
+<span class="co">#&gt; $ U       &lt;list&gt; [&lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 9]&gt;, …</span>
+<span class="co">#&gt; $ V       &lt;list&gt; [&lt;matrix[11 x 12]&gt;, &lt;matrix[11 x 12]&gt;, &lt;matrix[11 x 12]…</span>
+<span class="co">#&gt; $ Y       &lt;list&gt; [&lt;matrix[4 x 2]&gt;, &lt;matrix[4 x 2]&gt;, &lt;matrix[4 x 2]&gt;, &lt;ma…</span></code></pre></div>
+</div>
+<div id="verify-data" class="section level3">
+<h3>Verify data</h3>
+<p>An important step in any analysis is data verification. For an ECC analysis, it is important to verify that energy is conserved (i.e., energy is in balance) across all industries. Equations 1 and 2 in Heun, Owen, and Brockway <span class="citation">(2018)</span> show that energy balance is verified by</p>
+<p><span class="math display">\[{\mathbf{W}} = {{\mathbf{V}}^\mathrm{T}} - {\mathbf{U}},\]</span></p>
+<p>and</p>
+<p><span class="math display">\[{\mathbf{W}}{\mathbf{i}} - {\mathbf{Y}}{\mathbf{i}} = {\mathbf{0}}.\]</span></p>
+<p>Energy balance verification can be implemented with <code>matsbyname</code> functions and <code>tidyverse</code> functional programming:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Check &lt;-<span class="st"> </span>Energy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="dt">W =</span> <span class="kw">difference_byname</span>(<span class="kw">transpose_byname</span>(V), U),
+    <span class="co"># Need to change column name and type on y so it can be subtracted from row sums of W</span>
+    <span class="dt">err =</span> <span class="kw">difference_byname</span>(<span class="kw">rowsums_byname</span>(W), 
+                            <span class="kw">rowsums_byname</span>(Y) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                              </span><span class="kw">setcolnames_byname</span>(<span class="st">&quot;Industry&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">setcoltype</span>(<span class="st">&quot;Industry&quot;</span>)),
+    <span class="dt">EBalOK =</span> <span class="kw">iszero_byname</span>(err)
+  )
+Check <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Country, Year, EBalOK)
+<span class="co">#&gt;   Country Year EBalOK</span>
+<span class="co">#&gt; 1      AB 2000   TRUE</span>
+<span class="co">#&gt; 2      AB 2001   TRUE</span>
+<span class="co">#&gt; 3      GB 2000   TRUE</span>
+<span class="co">#&gt; 4      GB 2001   TRUE</span>
+<span class="kw">all</span>(Check<span class="op">$</span>EBalOK <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.logical</span>())
+<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+<p>This example demonstrates that energy balance can be verified for <em>all</em> combinations of Country and Year with a few lines of code. In fact, the exact same code can be applied to the <code>Energy</code> data frame, regardless of the number of rows in it.</p>
+<p>Secure in the knowledge that energy is conserved across all ECCs in the <code>Energy</code> data frame, other analyses can proceed.</p>
+</div>
+<div id="efficiencies" class="section level3">
+<h3>Efficiencies</h3>
+<p>To further illustrate the power of <code>matsbyname</code> functions in the context of <code>matsindf</code>, consider the calculation of the efficiency of every industry in the ECC as column vector <span class="math inline">\(\eta\)</span> as shown by Equation 11 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
+<p><span class="math display">\[{\mathbf{g}} = {\mathbf{V}}{\mathbf{i}}\]</span></p>
+<p><span class="math display">\[{\mathbf{\eta}} = {{\widehat{{{\mathbf{U}}^\mathrm{T}} {\mathbf{i}}}^{\mathrm{-}1}}} {\mathbf{g}}\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Etas &lt;-<span class="st"> </span>Energy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="dt">g =</span> <span class="kw">rowsums_byname</span>(V),
+    <span class="dt">eta =</span> <span class="kw">transpose_byname</span>(U) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rowsums_byname</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">hatize_byname</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">invert_byname</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">matrixproduct_byname</span>(g) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">setcolnames_byname</span>(<span class="st">&quot;eta&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">setcoltype</span>(<span class="st">&quot;Efficiency&quot;</span>)
+  ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(Country, Year, eta)
+
+Etas<span class="op">$</span>eta[[<span class="dv">1</span>]]
+<span class="co">#&gt;                         eta</span>
+<span class="co">#&gt; Crude dist.       0.9884332</span>
+<span class="co">#&gt; Diesel dist.      0.9774194</span>
+<span class="co">#&gt; Elect. grid       0.9804688</span>
+<span class="co">#&gt; Gas wells &amp; proc. 0.9518282</span>
+<span class="co">#&gt; NG dist.          0.9987820</span>
+<span class="co">#&gt; Oil fields        0.9485771</span>
+<span class="co">#&gt; Oil refineries    0.8921933</span>
+<span class="co">#&gt; Petrol dist.      0.9719626</span>
+<span class="co">#&gt; Power plants      0.3975155</span>
+<span class="co">#&gt; attr(,&quot;rowtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;Industry&quot;</span>
+<span class="co">#&gt; attr(,&quot;coltype&quot;)</span>
+<span class="co">#&gt; [1] &quot;Efficiency&quot;</span></code></pre></div>
+<p>Note that only a few lines of code are required to perform the same series of matrix operations on every combination of <code>Country</code> and <code>Year</code>. In fact, the same code will be used to calculate the efficiency of any number of industries in any number of countries and years!</p>
+</div>
+<div id="expand" class="section level3">
+<h3>Expand</h3>
+<p>Plotting values from a <code>matsindf</code> data frame can be accomplished by <em>expand</em>ing the matrices of the <code>matsindf</code> data frame (in this example, <code>Etas</code>) back out to a tidy data frame. <em>Expand</em>ing is the reverse of <em>collapse</em>-ing, and the following information must be supplied to the <code>expand_to_tidy</code> function:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">argument to <code>expand_to_tidy</code></th>
+<th align="left">identifies</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right"><code>matnames</code></td>
+<td align="left">Name of the input column of matrix names</td>
+</tr>
+<tr class="even">
+<td align="right"><code>matvals</code></td>
+<td align="left">Name of the input column of matrices to be expanded</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>rownames</code></td>
+<td align="left">Name of the output column of matrix row names</td>
+</tr>
+<tr class="even">
+<td align="right"><code>colnames</code></td>
+<td align="left">Name of the output column of matrix column name</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>rowtypes</code></td>
+<td align="left">Optional name of the output column of matrix row types</td>
+</tr>
+<tr class="even">
+<td align="right"><code>coltypes</code></td>
+<td align="left">Optional name of the output column of matrix column types</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>drop</code></td>
+<td align="left">Optional value to be dropped from output (often 0)</td>
+</tr>
+</tbody>
+</table>
+<p>Prior to <code>expand</code>ing, it is usually necessary to <code>gather</code> columns of matrices.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">etas_forgraphing &lt;-<span class="st"> </span>Etas <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> matrix.names, <span class="dt">value =</span> matrix, eta) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">expand_to_tidy</span>(<span class="dt">matnames =</span> <span class="st">&quot;matrix.names&quot;</span>, <span class="dt">matvals =</span> <span class="st">&quot;matrix&quot;</span>, 
+                 <span class="dt">rownames =</span> <span class="st">&quot;Industry&quot;</span>, <span class="dt">colnames =</span> <span class="st">&quot;etas&quot;</span>, 
+                 <span class="dt">rowtypes =</span> <span class="st">&quot;rowtype&quot;</span>, <span class="dt">coltypes =</span> <span class="st">&quot;Efficiencies&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="co"># Eliminate columns we no longer need.</span>
+    <span class="dt">matrix.names =</span> <span class="ot">NULL</span>,
+    <span class="dt">etas =</span> <span class="ot">NULL</span>, 
+    <span class="dt">rowtype =</span> <span class="ot">NULL</span>, 
+    <span class="dt">Efficiencies =</span> <span class="ot">NULL</span>
+  ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">rename</span>(
+    <span class="dt">eta =</span> matrix
+  )
+
+<span class="co"># Compare to Figure 8 of Heun, Owen, and Brockway (2018)</span>
+etas_forgraphing <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(Country <span class="op">==</span><span class="st"> &quot;GB&quot;</span>, Year <span class="op">==</span><span class="st"> </span><span class="dv">2000</span>)
+<span class="co">#&gt; # A tibble: 9 x 4</span>
+<span class="co">#&gt;   Country Year  Industry            eta</span>
+<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 GB      2000  Crude dist.       0.988</span>
+<span class="co">#&gt; 2 GB      2000  Diesel dist.      0.977</span>
+<span class="co">#&gt; 3 GB      2000  Elect. grid       0.980</span>
+<span class="co">#&gt; 4 GB      2000  Gas wells &amp; proc. 0.952</span>
+<span class="co">#&gt; 5 GB      2000  NG dist.          0.999</span>
+<span class="co">#&gt; 6 GB      2000  Oil fields        0.949</span>
+<span class="co">#&gt; 7 GB      2000  Oil refineries    0.892</span>
+<span class="co">#&gt; 8 GB      2000  Petrol dist.      0.972</span>
+<span class="co">#&gt; 9 GB      2000  Power plants      0.398</span></code></pre></div>
+<p><code>etas_forgraphing</code> is a data frame of efficiencies, one for each Country, Year, and Industry, in a format that is amenable to plotting with packages such as <a href="http://ggplot2.tidyverse.org">ggplot</a>.</p>
+</div>
+<div id="report" class="section level3">
+<h3>Report</h3>
+<p>The following code creates a bar graph of efficiency results for the UK in 2000:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">etas_UK_<span class="dv">2000</span> &lt;-<span class="st"> </span>etas_forgraphing <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(Country <span class="op">==</span><span class="st"> &quot;GB&quot;</span>, Year <span class="op">==</span><span class="st"> </span><span class="dv">2000</span>) 
+
+etas_UK_<span class="dv">2000</span> <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="dt">mapping =</span> <span class="kw">aes_string</span>(<span class="dt">x =</span> <span class="st">&quot;Industry&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;eta&quot;</span>, 
+                              <span class="dt">fill =</span> <span class="st">&quot;Industry&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;Industry&quot;</span>)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="kw">expression</span>(eta[UK<span class="op">*</span><span class="st">&quot;,&quot;</span><span class="op">*</span><span class="dv">2000</span>]), <span class="dt">fill =</span> <span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.2</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">rep</span>(<span class="st">&quot;white&quot;</span>, <span class="kw">nrow</span>(etas_UK_<span class="dv">2000</span>))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values =</span> <span class="kw">rep</span>(<span class="st">&quot;gray20&quot;</span>, <span class="kw">nrow</span>(etas_UK_<span class="dv">2000</span>))) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="ot">FALSE</span>, <span class="dt">colour =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">vjust =</span> <span class="fl">0.4</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>This vignette demonstrated the use of the <code>matsindf</code> and <code>matsbyname</code> packages and suggested a workflow to accomplish sophisticated analyses using <em>matrices in data frames</em> (<code>matsindf</code>).</p>
+<p>The workflow is as follows:</p>
+<ul>
+<li>Reshape data into a tidy data frame with columns for matrix name, element value, row name, column name, row type, and column type, similar to <code>UKEnergy2000</code> above.</li>
+<li>Use <code>collapse_to_matrices</code> to create a data frame of matrices with columns for matrix names and matrices themselves, similar to <code>EnergyMats_2000</code> above.</li>
+<li><code>tidyr::spread</code> the matrices to obtain a data frame with columns for each matrix, similar to <code>Energy</code> above.</li>
+<li>Validate the data, similar to <code>Check</code> above.</li>
+<li>Perform matrix algebra operations on the columns of matrices using <code>matsbyname</code> functions in a manner similar to the process of generating the <code>Etas</code> data frame above.</li>
+<li><code>tidyr::gather</code> the columns to obtain a tidy data frame of matrices.</li>
+<li>Use <code>expand_to_tidy</code> to create a tidy data frame of matrix elements, similar to <code>etas_forgraphing</code> above.</li>
+<li>Plot and report results as demonstrated by the graph above.</li>
+</ul>
+<p>Data frames of matrices, such as those created by <code>matsindf</code>, are like magic spreadsheets in which single cells contain entire matrices. With this data structure, analysts can wield simultaneously the power of both <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)">matrix mathematics</a> and <a href="http://www.tidyverse.org">tidyverse</a> functional programming.</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-Heun:2018">
+<p>Heun, Matthew Kuperus, Anne Owen, and Paul E. Brockway. 2018. “A Physical Supply-Use Table Framework for Energy Analysis on the Energy Conversion Chain.” <em>Applied Energy</em> 226 (September): 1134–62. doi:<a href="https://doi.org/10.1016/j.apenergy.2018.05.109">10.1016/j.apenergy.2018.05.109</a>.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,5 +1,15 @@
-# matsindf 0.3.0 (2019-01-26)
+# matsindf 0.3.1 (2019-10-26)
 
+* Refactored `group_by_everything_except()` to use a new helper function `everything_except()`
+* New function `group_by_everything_except()`
+* Added CRAN badge.
+
+
+# matsindf 0.3.0 (2019-02-05)
+
+* Address questions from CRAN: 
+      - Title case: Matrices in Data Frames
+      - `\dontrun{}` --> `\donttest{}` in Roxygen examples 
 * Fully-qualified all function calls in `matsindf` functions.
 * Now importing the `:=` and `.data` at a high level.
 * Added TravisCI integration

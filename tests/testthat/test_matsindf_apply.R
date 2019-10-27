@@ -66,14 +66,14 @@ test_that("matsindf_apply works as expected using .DF with matrices", {
   d <- a - b
   DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
   result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
-  expected <- bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
+  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
   expect_equivalent(result, expected)
   # Try with piped .DF argument
   result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b")
   expect_equivalent(result, expected)
 })
 
-test_that("matsindf_apply fails properly when not all same type for ...", {
+test_that("matsindf_apply fails as expected when not all same type for ...", {
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2), 'argument "a" is missing, with no default')
 })
 
@@ -112,7 +112,7 @@ test_that("matsindf_apply works with a NULL argument", {
   DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
   # Here is where the NULL is given as an argument to matsindp_apply.
   result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL)
-  expected <- bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
+  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
   expect_equivalent(result, expected)
   # Try with piped .DF argument
   result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b", z = NULL)
@@ -170,3 +170,4 @@ test_that("matsindf_apply works when an argument is missing", {
   expect_error(outer_fun(b = 2),
                'argument "a_num" is missing, with no default')
 })
+

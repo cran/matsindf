@@ -18,41 +18,41 @@ context("Utilities")
 test_that("index_column works as expected", {
   DF1 <- data.frame(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40))
   expected1 <- DF1 %>%
-    mutate(
+    dplyr::mutate(
       var_indexed = c(1, 2, 4)
     )
   # Group on the indexing variable to obtain an error.
-  expect_error(index_column(DF1 %>% group_by(var), var_to_index = "var"),
+  expect_error(index_column(DF1 %>% dplyr::group_by(var), var_to_index = "var"),
                "Indexing variable 'var' in groups of .DF in index_column.")
   # Group on the time variable to obtain an error.
-  expect_error(index_column(DF1 %>% group_by(Year), var_to_index = "var"),
+  expect_error(index_column(DF1 %>% dplyr::group_by(Year), var_to_index = "var"),
                "Time variable 'Year' in groups of .DF in index_column.")
   # Group on the correct variable to achieve success.
-  expect_equal(index_column(DF1 %>% group_by(Country), var_to_index = "var"), expected1)
+  expect_equal(index_column(DF1 %>% dplyr::group_by(Country), var_to_index = "var"), expected1)
 
   # Test with 2 groups.
   DF2 <- DF1 %>%
-    ungroup() %>%
-    mutate(
+    dplyr::ungroup() %>%
+    dplyr::mutate(
       Country = as.character(Country)
     ) %>%
     dplyr::bind_rows(data.frame(Country = c("GH", "GH", "GH"), Year = c(2011, 2012, 2013), var = c(1, 2, 4), stringsAsFactors = FALSE))
   expected2 <- DF2 %>%
-    mutate(
+    dplyr::mutate(
       var_indexed = c(1, 2, 4, 1, 2, 4)
     )
   # Index on the (default) first year in each group.
-  expect_equal(index_column(DF2 %>% group_by(Country), var_to_index = "var"), expected2)
+  expect_equal(index_column(DF2 %>% dplyr::group_by(Country), var_to_index = "var"), expected2)
   # Index on a specified year
   DF2half <- DF2 %>%
-    mutate(
+    dplyr::mutate(
       Year = c(2011, 2012, 2013, 2011, 2012, 2013)
     )
   expected2half <- DF2half %>%
-    mutate(
+    dplyr::mutate(
       var_indexed = c(0.5, 1, 2, 0.5, 1, 2)
     )
-  expect_equal(index_column(DF2half %>% group_by(Country), var_to_index = "var", index_time = 2012),
+  expect_equal(index_column(DF2half %>% dplyr::group_by(Country), var_to_index = "var", index_time = 2012),
                expected2half)
 
   # Test when the variable to be indexed is a column of a data frame containing matrices.
@@ -67,7 +67,7 @@ test_that("index_column works as expected", {
     rowtypes = "row",
     coltypes = "col"
   ) %>%
-    group_by(Country, Year, matname) %>%
+    dplyr::group_by(Country, Year, matname) %>%
     collapse_to_matrices(matnames = "matname",  matvals = "matvals",
                          rownames = "rowname",  colnames = "colname",
                          rowtypes = "rowtypes", coltypes = "coltypes")
@@ -81,18 +81,18 @@ test_that("index_column works as expected", {
     rowtypes = "row",
     coltypes = "col"
   ) %>%
-    group_by(Country, Year, matname) %>%
+    dplyr::group_by(Country, Year, matname) %>%
     collapse_to_matrices(matnames = "matname",  matvals = "matvals_indexed",
                          rownames = "rowname",  colnames = "colname",
                          rowtypes = "rowtypes", coltypes = "coltypes") %>%
     # Add the matvals column
-    mutate(
+    dplyr::mutate(
       matvals = DF3$matvals
     ) %>%
     # Put in the expected order
-    select(Country, Year, matname, matvals, matvals_indexed)
+    dplyr::select(Country, Year, matname, matvals, matvals_indexed)
 
-  expect_equal(index_column(DF3 %>% group_by(Country, matname), var_to_index = "matvals") %>% as.data.frame(), expected3)
+  expect_equal(index_column(DF3 %>% dplyr::group_by(Country, matname), var_to_index = "matvals") %>% as.data.frame(), expected3)
 })
 
 test_that("rowcolval_to_mat (collapse) works as expected", {
@@ -102,7 +102,7 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
                          nrow = 2, ncol = 2, byrow = TRUE,
                          dimnames = list(c("p1", "p2"), c("i1", "i2")))
   expected_mat_with_types <- expected_mat %>%
-    setrowtype("Products") %>% setcoltype("Industries")
+    matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
   # Create a data frame that can be converted to a matrix.
   rowcolval <- data.frame(Country  = c("GH", "GH", "GH"),
@@ -161,7 +161,7 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                            0,  22),
                          nrow = 2, ncol = 2, byrow = TRUE,
                          dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
-    setrowtype("Products") %>% setcoltype("Industries")
+    matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
   # This is the data frame that we'll use the construct the matrix
   data <- data.frame(rows = c( "p1",  "p1", "p2"),
@@ -169,13 +169,13 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                      vals = c(  11  ,  12,   22 ),
                      rt = c("Products", "Products", "Products"),
                      ct = c("Industries", "Industries", "Industries")) %>%
-    mutate(
+    dplyr::mutate(
       rows = as.character(rows),
       cols = as.character(cols),
       rt = as.character(rt),
       ct = as.character(ct)
     ) %>%
-    set_rownames(NULL)
+    magrittr::set_rownames(NULL)
 
   # Construct the matrix that we'll convert later to a data frame.
   A <- data %>%
@@ -188,7 +188,7 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                    rownames = "rows", colnames = "cols",
                    rowtypes = "rt", coltypes = "ct",
                    matvals = "vals",
-                   drop = 0) %>% set_rownames(NULL),
+                   drop = 0) %>% magrittr::set_rownames(NULL),
                "Unknown type of .matrix in mat_to_rowcolval A of class character and length 1")
 
   # Veryfy that we can convert the matrix to a data frame.
@@ -197,17 +197,17 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                                 rowtypes = "rt", coltypes = "ct",
                                 matvals = "vals",
                                 drop = 0) %>%
-                 set_rownames(NULL),
+                 magrittr::set_rownames(NULL),
                data)
 
   # Try when rowtype and coltype are not specified.
-  A_trimmed <- A %>% setrowtype(NULL) %>% setcoltype(NULL)
+  A_trimmed <- A %>% matsbyname::setrowtype(NULL) %>% matsbyname::setcoltype(NULL)
   expect_equal(mat_to_rowcolval(A_trimmed,
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
                                 drop = 0) %>%
-                 set_rownames(1:nrow(.)),
-               data %>% mutate(rt = NULL, ct = NULL))
+                 magrittr::set_rownames(1:nrow(.)),
+               data %>% dplyr::mutate(rt = NULL, ct = NULL))
 
 
   # Verify that drop works correctly.
@@ -268,6 +268,88 @@ test_that("verify_cols_missing errors as expected", {
   expect_null(verify_cols_missing(DF, newcols = DF))
   expect_error(verify_cols_missing(DF, "A"),
                "column\\(s\\) 'A' is \\(are\\) already column names in data frame 'DF'")
+})
+
+
+test_that("everything_except works as expected for symbols", {
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  expect_equal(everything_except(DF, "a"), c(as.name("b"), as.name("c")))
+  expect_equal(everything_except(DF, "a"), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
+  # Ensure all columns of .DF are returned if ... is empty or NULL.
+  expect_equal(DF %>% everything_except(), sapply(c("a", "b", "c"), as.name, USE.NAMES = FALSE))
+  expect_equal(everything_except(DF, NULL), sapply(c("a", "b", "c"), as.name, USE.NAMES = FALSE))
+  # Try an empty vector
+  expect_equal(everything_except(DF, c()), sapply(c("a", "b", "c"), as.name, USE.NAMES = FALSE))
+  # Try an empty list
+  expect_equal(everything_except(DF, list()), sapply(c("a", "b", "c"), as.name, USE.NAMES = FALSE))
+  # Ensure that it works with strings
+  expect_equal(everything_except(DF, "a"), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
+  expect_equal(everything_except(DF, "a", "b"), sapply("c", as.name, USE.NAMES = FALSE))
+  expect_equal(everything_except(DF, "c"), sapply(c("a", "b"), as.name, USE.NAMES = FALSE))
+  # Now try a vector of strings
+  expect_equal(everything_except(DF, c("a", "c")), sapply("b", as.name, USE.NAMES = FALSE))
+  expect_equal(everything_except(DF, c("a")), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
+  # Try a list.  Should still work.
+  expect_equal(everything_except(DF, list("a")), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
+})
+
+test_that("everything_except works as expected for strings", {
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  expect_equal(everything_except(DF, "a", .symbols = FALSE), c("b", "c"))
+  # Ensure all columns of .DF are returned if ... is empty or NULL.
+  expect_equal(DF %>% everything_except(.symbols = FALSE), c("a", "b", "c"))
+  expect_equal(everything_except(DF, NULL, .symbols = FALSE), c("a", "b", "c"))
+  # Try an empty vector
+  expect_equal(everything_except(DF, c(), .symbols = FALSE), c("a", "b", "c"))
+  # Try an empty list
+  expect_equal(everything_except(DF, list(), .symbols = FALSE), c("a", "b", "c"))
+  # Ensure that it works with strings
+  expect_equal(everything_except(DF, "a", .symbols = FALSE), c("b", "c"))
+  expect_equal(everything_except(DF, "a", "b", .symbols = FALSE), "c")
+  expect_equal(everything_except(DF, "c", .symbols = FALSE), c("a", "b"))
+  # Now try a vector of strings
+  expect_equal(everything_except(DF, c("a", "c"), .symbols = FALSE), "b")
+  expect_equal(everything_except(DF, c("a"), .symbols = FALSE), c("b", "c"))
+  # Try a list.  Should still work.
+  expect_equal(everything_except(DF, list("a"), .symbols = FALSE), c("b", "c"))
+})
+
+test_that("group_by_everything_except works as expected", {
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  # Ensure everything is in the grouping variables grouped if ... is empty or NULL.
+  expect_equal(group_by_everything_except(DF) %>% dplyr::group_vars(), c("a", "b", "c"))
+  expect_equal(group_by_everything_except(DF, NULL) %>% dplyr::group_vars(), c("a", "b", "c"))
+  # Try an empty vector
+  expect_equal(group_by_everything_except(DF, c()) %>% dplyr::group_vars(), c("a", "b", "c"))
+  # Try an empty list
+  expect_equal(group_by_everything_except(DF, list()) %>% dplyr::group_vars(), c("a", "b", "c"))
+  # Ensure that it works with strings
+  expect_equal(group_by_everything_except(DF, "c") %>% dplyr::group_vars(), c("a", "b"))
+  # Now try a vector of strings
+  expect_equal(group_by_everything_except(DF, c("a", "c")) %>% dplyr::group_vars(), "b")
+  expect_equal(group_by_everything_except(DF, c("a")) %>% dplyr::group_vars(), c("b", "c"))
+  # Try a list.  Should still work.
+  expect_equal(group_by_everything_except(DF, list("a")) %>% dplyr::group_vars(), c("b", "c"))
+
+  # Test that things go as expected when groups already exist.
+  DF %>%
+    dplyr::group_by(a) %>%
+    group_by_everything_except("b") %>%  # Resets groups
+    dplyr::group_vars() %>%
+    expect_equal(c("a", "c"))
+  DF %>%
+    dplyr::group_by(a) %>%
+    group_by_everything_except("a", add = TRUE) %>%  # Adds to groups
+    dplyr::group_vars() %>%
+    expect_equal(c("a", "b", "c"))
+
+  # Test that everything works when the excluded column is NOT in the data frame.
+  expect_equal(group_by_everything_except(DF, c("a", "z")) %>% dplyr::group_vars(), c("b", "c"))
+  expect_equal(group_by_everything_except(DF, c("x", "y", "z")) %>% dplyr::group_vars(), c("a", "b", "c"))
+
+  # Test that it works when you supply a reference to a string.
+  a_var <- "a"
+  expect_equal(group_by_everything_except(DF, a_var) %>% dplyr::group_vars(), c("b", "c"))
 })
 
 

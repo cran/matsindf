@@ -124,8 +124,8 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' # Fails when rowtypes or coltypes not all same. In data3, column rt is not all same.
 #' data4 <- data %>% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
 #'                                        ct = c("Industries", "Industries", "Industries")))
-#' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
-#'                           matvals = "vals", rowtypes = "rt", coltypes = "ct")}
+#' \donttest{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
+#'                            matvals = "vals", rowtypes = "rt", coltypes = "ct")}
 rowcolval_to_mat <- function(.DF, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
                              rowtypes = "rowtypes", coltypes = "coltypes", fill = 0){
@@ -229,8 +229,8 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 #' index_column(DF, var_to_index = "var", time_var = "Year", suffix = "_ratioed")
 #' index_column(DF, var_to_index = "var", time_var = "Year", indexed_var = "now.indexed")
 #' index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
-#'           indexed_var = "now.indexed")
-#' \dontrun{
+#'              indexed_var = "now.indexed")
+#' \donttest{
 #'   DF %>%
 #'     ungroup() %>%
 #'     group_by(name, var) %>%
@@ -316,7 +316,7 @@ index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL
 #' df <- data.frame(a = c(1,2), b = c(3,4))
 #' verify_cols_missing(df, "d") # Silent. There will be no problem adding column "d".
 #' newcols <- c("c", "d", "a", "b")
-#' \dontrun{verify_cols_missing(df, newcols)}
+#' \donttest{verify_cols_missing(df, newcols)} # Error: a and b are already in df.
 verify_cols_missing <- function(.DF, newcols){
   if (!is.vector(newcols)) {
     newcols <- c(newcols)
@@ -328,6 +328,81 @@ verify_cols_missing <- function(.DF, newcols){
                 deparse(substitute(.DF)), "'"))
   }
   invisible(NULL)
+}
+
+
+
+
+#' Get symbols for all columns except ...
+#'
+#' This convenience function performs a set difference between
+#' the columns of \code{.DF} and the variable names (or symbols) given in \code{...}.
+#' The return value is a list of symbols.
+#'
+#' @param .DF a data frame whose variable names are to be differenced
+#' @param ... a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}
+#' @param .symbols a boolean that defines the return type: \code{TRUE} for symbols, \code{FALSE} for strings
+#'
+#' @return a vector of symbols (when \code{symbols = TRUE}) or strings (when \code{symbol = FALSE}) containing all variables names except those given in \code{...}
+#'
+#' @export
+#'
+#' @examples
+#' DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+#' everything_except(DF, "a", "b")
+#' everything_except(DF, "a", "b", symbols = FALSE)
+#' everything_except(DF, c("a", "b"))
+#' everything_except(DF, list("a", "b"))
+everything_except <- function(.DF, ..., .symbols = TRUE){
+  dots <- list(...) %>% unlist()
+  if (all(is.character(dots))) {
+    to_exclude <- dots
+  } else {
+    # Assume all items in ... are symbols.
+    # Convert symbols to strings using the deparse(substitute()) trick.
+    to_exclude <- deparse(substitute(...))
+  }
+  grouping_vars <- base::setdiff(names(.DF), to_exclude)
+  if (!.symbols) {
+    return(grouping_vars)
+  }
+  sapply(grouping_vars, as.name, USE.NAMES = FALSE)
+}
+
+
+#' Group by all variables except some
+#'
+#' This is a convenience function
+#' that allows grouping of a data frame by all variables (columns)
+#' except those variables specified in \code{...}.
+#'
+#' @param .DF a data frame to be grouped
+#' @param ... a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping
+#' @param add When \code{add = FALSE}, the default, \code{group_by()} will override existing groups.
+#'            To add to the existing groups, use \code{add = TRUE}.
+#' @param .drop When \code{.drop = TRUE}, empty groups are dropped.
+#'
+#' @return a grouped version of \code{.DF}
+#'
+#' @export
+#'
+#' @examples
+#' library(dplyr)
+#' DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+#' group_by_everything_except(DF) %>% group_vars()
+#' group_by_everything_except(DF, NULL) %>% group_vars()
+#' group_by_everything_except(DF, c()) %>% group_vars()
+#' group_by_everything_except(DF, list()) %>% group_vars()
+#' group_by_everything_except(DF, c) %>% group_vars()
+#' group_by_everything_except(DF, "a") %>% group_vars()
+#' group_by_everything_except(DF, "c") %>% group_vars()
+#' group_by_everything_except(DF, c("a", "c")) %>% group_vars()
+#' group_by_everything_except(DF, c("a")) %>% group_vars()
+#' group_by_everything_except(DF, list("a")) %>% group_vars()
+group_by_everything_except <- function(.DF, ..., add = FALSE, .drop = FALSE){
+  grouping_cols <- do.call(everything_except, list(.DF = .DF, ...))
+  .DF %>%
+    dplyr::group_by(!!!grouping_cols, add = add, .drop = .drop)
 }
 
 

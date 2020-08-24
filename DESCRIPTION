@@ -1,8 +1,8 @@
 Package: matsindf
 Type: Package
 Title: Matrices in Data Frames
-Version: 0.3.4
-Date: 2020-03-21
+Version: 0.3.6
+Date: 2020-08-24
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      comment = c(ORCID = "0000-0002-7438-214X"),
                      email = "matthew.heun@me.com"))
@@ -13,16 +13,15 @@ License: MIT + file LICENSE
 Language: en-US
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Depends: R (>= 2.10)
-Imports: dplyr, magrittr, matsbyname, purrr, rlang, rlist, tibble,
-        tidyr
+Imports: dplyr, magrittr, matsbyname, purrr, rlang, tibble, tidyr
 Suggests: ggplot2, knitr, rmarkdown, testthat, covr
 VignetteBuilder: knitr
 URL: https://github.com/MatthewHeun/matsindf
 BugReports: https://github.com/MatthewHeun/matsindf/issues
 NeedsCompilation: no
-Packaged: 2020-03-21 20:49:47 UTC; matt
+Packaged: 2020-08-24 12:05:03 UTC; mkh2
 Author: Matthew Heun [aut, cre] (<https://orcid.org/0000-0002-7438-214X>)
 Repository: CRAN
-Date/Publication: 2020-03-22 04:00:02 UTC
+Date/Publication: 2020-08-24 13:40:03 UTC

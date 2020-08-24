@@ -15,7 +15,7 @@ a vector of names of new columns to be added to \code{.DF}}
 }
 \value{
 \code{NULL}. This function should be called for its side effect of checking the validity
-        of the names of \code{newcols} to be added to \code{.DF}.
+of the names of \code{newcols} to be added to \code{.DF}.
 }
 \description{
 In the \code{Recca} package, many functions add columns to an existing data frame.
@@ -32,5 +32,5 @@ by one of the \code{newcols}.
 df <- data.frame(a = c(1,2), b = c(3,4))
 verify_cols_missing(df, "d") # Silent. There will be no problem adding column "d".
 newcols <- c("c", "d", "a", "b")
-\donttest{verify_cols_missing(df, newcols)} # Error: a and b are already in df.
+\dontrun{verify_cols_missing(df, newcols)} # Error: a and b are already in df.
 }

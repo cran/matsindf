@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matthew Kuperus Heun" />
 
-<meta name="date" content="2023-01-24" />
+<meta name="date" content="2023-03-07" />
 
 <title>Use Cases and Examples for matsindf</title>
 
@@ -362,7 +362,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Use Cases and Examples for matsindf</h1>
 <h4 class="author">Matthew Kuperus Heun</h4>
-<h4 class="date">2023-01-24</h4>
+<h4 class="date">2023-03-07</h4>
 
 
 
@@ -535,9 +535,9 @@ row names, column names, row types, and column types in a tidy data
 frame.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>UKEnergy2000_with_metadata <span class="ot">&lt;-</span> UKEnergy2000 <span class="sc">%&gt;%</span> </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add a column indicating the matrix in which this entry belongs (U, V, or Y).</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  matsindf<span class="sc">:::</span><span class="fu">add_UKEnergy2000_matnames</span>(.) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  matsindf<span class="sc">:::</span><span class="fu">add_UKEnergy2000_matnames</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add columns for row names, column names, row types, and column types.</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  matsindf<span class="sc">:::</span><span class="fu">add_UKEnergy2000_row_col_meta</span>(.) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  matsindf<span class="sc">:::</span><span class="fu">add_UKEnergy2000_row_col_meta</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Eliminate columns we no longer need</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Ledger.side =</span> <span class="cn">NULL</span>,</span>

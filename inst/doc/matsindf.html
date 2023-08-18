@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matthew Kuperus Heun" />
 
-<meta name="date" content="2023-05-23" />
+<meta name="date" content="2023-08-18" />
 
 <title>Use Cases and Examples for matsindf</title>
 
@@ -362,7 +362,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Use Cases and Examples for matsindf</h1>
 <h4 class="author">Matthew Kuperus Heun</h4>
-<h4 class="date">2023-05-23</h4>
+<h4 class="date">2023-08-18</h4>
 
 
 
@@ -434,13 +434,13 @@ example is based on an approximation to a portion of the UK’s ECC circa
 2000. (Note that these data are to be used for demonstration purposes
 only and have been rounded to 1–2 significant digits.) These example
 data first appeared in Figures 3 and 4 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(UKEnergy2000, <span class="dv">2</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Country Year Ledger.side      Flow.aggregation.point              Flow</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      GB 2000      Supply Total primary energy supply Resources - Crude</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2      GB 2000      Supply Total primary energy supply    Resources - NG</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Product E.ktoe</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   Crude  50000</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2      NG  43000</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">head</span>(UKEnergy2000, <span class="dv">2</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">#&gt;   Country Year Ledger.side      Flow.aggregation.point              Flow</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt; 1      GB 2000      Supply Total primary energy supply Resources - Crude</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt; 2      GB 2000      Supply Total primary energy supply    Resources - NG</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt;   Product E.ktoe</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; 1   Crude  50000</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; 2      NG  43000</span></span></code></pre></div>
 <p><code>Country</code> and <code>Year</code> contain only one value
 each, <code>GB</code> and <code>2000</code> respectively. Following
 conventions of the <a href="https://www.iea.org">International Energy
@@ -533,24 +533,24 @@ for this application, relying on <code>Ledger.side</code>, the sign of
 matrix. Each type of network will have its own algorithm for identifying
 row names, column names, row types, and column types in a tidy data
 frame.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>UKEnergy2000_with_metadata <span class="ot">&lt;-</span> UKEnergy2000 <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add a column indicating the matrix in which this entry belongs (U, V, or Y).</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  matsindf<span class="sc">:::</span><span class="fu">add_UKEnergy2000_matnames</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add columns for row names, column names, row types, and column types.</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  matsindf<span class="sc">:::</span><span class="fu">add_UKEnergy2000_row_col_meta</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Eliminate columns we no longer need</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Ledger.side =</span> <span class="cn">NULL</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Flow.aggregation.point =</span> <span class="cn">NULL</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Flow =</span> <span class="cn">NULL</span>,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Product =</span> <span class="cn">NULL</span>, </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ensure that all energy values are positive, as required for analysis.</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">E.ktoe =</span> <span class="fu">abs</span>(E.ktoe)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(UKEnergy2000_with_metadata, <span class="dv">2</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Country Year E.ktoe matname           rowname colname  rowtype coltype</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      GB 2000  50000       V Resources - Crude   Crude Industry Product</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2      GB 2000  43000       V    Resources - NG      NG Industry Product</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>UKEnergy2000_with_metadata <span class="ot">&lt;-</span> UKEnergy2000 <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="co"># Add a column indicating the matrix in which this entry belongs (U, V, or Y).</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  matsindf<span class="sc">:::</span><span class="fu">add_UKEnergy2000_matnames</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="co"># Add columns for row names, column names, row types, and column types.</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  matsindf<span class="sc">:::</span><span class="fu">add_UKEnergy2000_row_col_meta</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    <span class="co"># Eliminate columns we no longer need</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    <span class="at">Ledger.side =</span> <span class="cn">NULL</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    <span class="at">Flow.aggregation.point =</span> <span class="cn">NULL</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    <span class="at">Flow =</span> <span class="cn">NULL</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    <span class="at">Product =</span> <span class="cn">NULL</span>, </span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    <span class="co"># Ensure that all energy values are positive, as required for analysis.</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="at">E.ktoe =</span> <span class="fu">abs</span>(E.ktoe)</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>  )</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="fu">head</span>(UKEnergy2000_with_metadata, <span class="dv">2</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt;   Country Year E.ktoe matname           rowname colname  rowtype coltype</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; 1      GB 2000  50000       V Resources - Crude   Crude Industry Product</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; 2      GB 2000  43000       V    Resources - NG      NG Industry Product</span></span></code></pre></div>
 </div>
 <div id="collapse" class="section level3">
 <h3>Collapse</h3>
@@ -564,106 +564,106 @@ which matrices. The usual approach is to <code>tidyr::group_by</code>
 the <code>matnames</code> column and any other columns to be preserved
 in the output, in this case <code>Country</code> and
 <code>Year</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>EnergyMats_2000 <span class="ot">&lt;-</span> UKEnergy2000_with_metadata <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Country, Year, matname) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collapse_to_matrices</span>(<span class="at">matnames =</span> <span class="st">&quot;matname&quot;</span>, <span class="at">matvals =</span> <span class="st">&quot;E.ktoe&quot;</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">rownames =</span> <span class="st">&quot;rowname&quot;</span>, <span class="at">colnames =</span> <span class="st">&quot;colname&quot;</span>, </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">rowtypes =</span> <span class="st">&quot;rowtype&quot;</span>, <span class="at">coltypes =</span> <span class="st">&quot;coltype&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">matrix.name =</span> matname, <span class="at">matrix =</span> E.ktoe)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># The remaining columns are Country, Year, matrix.name, and matrix</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(EnergyMats_2000)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 3</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Country     &lt;chr&gt; &quot;GB&quot;, &quot;GB&quot;, &quot;GB&quot;</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Year        &lt;int&gt; 2000, 2000, 2000</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ matrix.name &lt;chr&gt; &quot;U&quot;, &quot;V&quot;, &quot;Y&quot;</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ matrix      &lt;list&gt; &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;matrix[11 x 12]&gt;&gt;, &lt;&lt;matrix[4 x 2]&gt;&gt;</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># To access one of the matrices, try one of these approaches:</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>(EnergyMats_2000 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(matrix.name <span class="sc">==</span> <span class="st">&quot;U&quot;</span>))[[<span class="st">&quot;matrix&quot;</span>]] <span class="co"># The U matrix</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Crude dist. Diesel dist. Elect. grid Gas wells &amp; proc. NG dist.</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude                    0            0           0                 0        0</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude - Dist.            0            0           0                 0        0</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude - Fields       47500            0           0                 0        0</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Diesel                   0        15500           0                 0        0</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.          25            0           0                50       25</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elect                    0            0        6400                 0        0</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elect - Grid            25            0           0                25       25</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG                       0            0           0             43000        0</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG - Dist.               0            0           0                 0        0</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG - Wells               0            0           0                 0    41000</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Petrol                   0            0           0                 0        0</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Oil fields Oil refineries Petrol dist. Power plants</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude               50000              0            0            0</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude - Dist.           0          47000            0            0</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude - Fields          0              0            0            0</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Diesel                  0              0            0            0</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.         50              0          250            0</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elect                   0              0            0            0</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elect - Grid           25             75            0          100</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG                      0              0            0            0</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG - Dist.              0              0            0        16000</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG - Wells              0              0            0            0</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Petrol                  0              0        26500            0</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Product&quot;</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Industry&quot;</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>EnergyMats_2000<span class="sc">$</span>matrix[[<span class="dv">2</span>]] <span class="co"># The V matrix</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Crude Crude - Dist. Crude - Fields Diesel Diesel - Dist.</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude dist.           0         47000              0      0              0</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Diesel dist.          0             0              0      0          15150</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elect. grid           0             0              0      0              0</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.     0             0              0      0              0</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG dist.              0             0              0      0              0</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Oil fields            0             0          47500      0              0</span></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Oil refineries        0             0              0  15500              0</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Petrol dist.          0             0              0      0              0</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Power plants          0             0              0      0              0</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Resources - Crude 50000             0              0      0              0</span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Resources - NG        0             0              0      0              0</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Elect Elect - Grid    NG NG - Dist. NG - Wells Petrol</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude dist.           0            0     0          0          0      0</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Diesel dist.          0            0     0          0          0      0</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elect. grid           0         6275     0          0          0      0</span></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.     0            0     0          0      41000      0</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG dist.              0            0     0      41000          0      0</span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Oil fields            0            0     0          0          0      0</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Oil refineries        0            0     0          0          0  26500</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Petrol dist.          0            0     0          0          0      0</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Power plants       6400            0     0          0          0      0</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Resources - Crude     0            0     0          0          0      0</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Resources - NG        0            0 43000          0          0      0</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Petrol - Dist.</span></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude dist.                    0</span></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Diesel dist.                   0</span></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elect. grid                    0</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.              0</span></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG dist.                       0</span></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Oil fields                     0</span></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Oil refineries                 0</span></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Petrol dist.               26000</span></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Power plants                   0</span></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Resources - Crude              0</span></span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Resources - NG                 0</span></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Industry&quot;</span></span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Product&quot;</span></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>EnergyMats_2000<span class="sc">$</span>matrix[[<span class="dv">3</span>]] <span class="co"># The Y matrix</span></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Residential Transport</span></span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.           0     14750</span></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elect - Grid          6000         0</span></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG - Dist.           25000         0</span></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Petrol - Dist.           0     26000</span></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Product&quot;</span></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Sector&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>EnergyMats_2000 <span class="ot">&lt;-</span> UKEnergy2000_with_metadata <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Country, Year, matname) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">collapse_to_matrices</span>(<span class="at">matnames =</span> <span class="st">&quot;matname&quot;</span>, <span class="at">matvals =</span> <span class="st">&quot;E.ktoe&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                       <span class="at">rownames =</span> <span class="st">&quot;rowname&quot;</span>, <span class="at">colnames =</span> <span class="st">&quot;colname&quot;</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>                       <span class="at">rowtypes =</span> <span class="st">&quot;rowtype&quot;</span>, <span class="at">coltypes =</span> <span class="st">&quot;coltype&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">matrix.name =</span> matname, <span class="at">matrix =</span> E.ktoe)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co"># The remaining columns are Country, Year, matrix.name, and matrix</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">glimpse</span>(EnergyMats_2000)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; Rows: 3</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; $ Country     &lt;chr&gt; &quot;GB&quot;, &quot;GB&quot;, &quot;GB&quot;</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; $ Year        &lt;int&gt; 2000, 2000, 2000</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; $ matrix.name &lt;chr&gt; &quot;U&quot;, &quot;V&quot;, &quot;Y&quot;</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; $ matrix      &lt;list&gt; &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;matrix[11 x 12]&gt;&gt;, &lt;&lt;matrix[4 x 2]&gt;&gt;</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co"># To access one of the matrices, try one of these approaches:</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>(EnergyMats_2000 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(matrix.name <span class="sc">==</span> <span class="st">&quot;U&quot;</span>))[[<span class="st">&quot;matrix&quot;</span>]] <span class="co"># The U matrix</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;                Crude dist. Diesel dist. Elect. grid Gas wells &amp; proc. NG dist.</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; Crude                    0            0           0                 0        0</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; Crude - Dist.            0            0           0                 0        0</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; Crude - Fields       47500            0           0                 0        0</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt; Diesel                   0        15500           0                 0        0</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.          25            0           0                50       25</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt; Elect                    0            0        6400                 0        0</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt; Elect - Grid            25            0           0                25       25</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; NG                       0            0           0             43000        0</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; NG - Dist.               0            0           0                 0        0</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; NG - Wells               0            0           0                 0    41000</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; Petrol                   0            0           0                 0        0</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt;                Oil fields Oil refineries Petrol dist. Power plants</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; Crude               50000              0            0            0</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; Crude - Dist.           0          47000            0            0</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; Crude - Fields          0              0            0            0</span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; Diesel                  0              0            0            0</span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.         50              0          250            0</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; Elect                   0              0            0            0</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="co">#&gt; Elect - Grid           25             75            0          100</span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="co">#&gt; NG                      0              0            0            0</span></span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; NG - Dist.              0              0            0        16000</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="co">#&gt; NG - Wells              0              0            0            0</span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="co">#&gt; Petrol                  0              0        26500            0</span></span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Product&quot;</span></span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Industry&quot;</span></span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a>EnergyMats_2000<span class="sc">$</span>matrix[[<span class="dv">2</span>]] <span class="co"># The V matrix</span></span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a><span class="co">#&gt;                   Crude Crude - Dist. Crude - Fields Diesel Diesel - Dist.</span></span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a><span class="co">#&gt; Crude dist.           0         47000              0      0              0</span></span>
+<span id="cb3-52"><a href="#cb3-52" tabindex="-1"></a><span class="co">#&gt; Diesel dist.          0             0              0      0          15150</span></span>
+<span id="cb3-53"><a href="#cb3-53" tabindex="-1"></a><span class="co">#&gt; Elect. grid           0             0              0      0              0</span></span>
+<span id="cb3-54"><a href="#cb3-54" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.     0             0              0      0              0</span></span>
+<span id="cb3-55"><a href="#cb3-55" tabindex="-1"></a><span class="co">#&gt; NG dist.              0             0              0      0              0</span></span>
+<span id="cb3-56"><a href="#cb3-56" tabindex="-1"></a><span class="co">#&gt; Oil fields            0             0          47500      0              0</span></span>
+<span id="cb3-57"><a href="#cb3-57" tabindex="-1"></a><span class="co">#&gt; Oil refineries        0             0              0  15500              0</span></span>
+<span id="cb3-58"><a href="#cb3-58" tabindex="-1"></a><span class="co">#&gt; Petrol dist.          0             0              0      0              0</span></span>
+<span id="cb3-59"><a href="#cb3-59" tabindex="-1"></a><span class="co">#&gt; Power plants          0             0              0      0              0</span></span>
+<span id="cb3-60"><a href="#cb3-60" tabindex="-1"></a><span class="co">#&gt; Resources - Crude 50000             0              0      0              0</span></span>
+<span id="cb3-61"><a href="#cb3-61" tabindex="-1"></a><span class="co">#&gt; Resources - NG        0             0              0      0              0</span></span>
+<span id="cb3-62"><a href="#cb3-62" tabindex="-1"></a><span class="co">#&gt;                   Elect Elect - Grid    NG NG - Dist. NG - Wells Petrol</span></span>
+<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a><span class="co">#&gt; Crude dist.           0            0     0          0          0      0</span></span>
+<span id="cb3-64"><a href="#cb3-64" tabindex="-1"></a><span class="co">#&gt; Diesel dist.          0            0     0          0          0      0</span></span>
+<span id="cb3-65"><a href="#cb3-65" tabindex="-1"></a><span class="co">#&gt; Elect. grid           0         6275     0          0          0      0</span></span>
+<span id="cb3-66"><a href="#cb3-66" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.     0            0     0          0      41000      0</span></span>
+<span id="cb3-67"><a href="#cb3-67" tabindex="-1"></a><span class="co">#&gt; NG dist.              0            0     0      41000          0      0</span></span>
+<span id="cb3-68"><a href="#cb3-68" tabindex="-1"></a><span class="co">#&gt; Oil fields            0            0     0          0          0      0</span></span>
+<span id="cb3-69"><a href="#cb3-69" tabindex="-1"></a><span class="co">#&gt; Oil refineries        0            0     0          0          0  26500</span></span>
+<span id="cb3-70"><a href="#cb3-70" tabindex="-1"></a><span class="co">#&gt; Petrol dist.          0            0     0          0          0      0</span></span>
+<span id="cb3-71"><a href="#cb3-71" tabindex="-1"></a><span class="co">#&gt; Power plants       6400            0     0          0          0      0</span></span>
+<span id="cb3-72"><a href="#cb3-72" tabindex="-1"></a><span class="co">#&gt; Resources - Crude     0            0     0          0          0      0</span></span>
+<span id="cb3-73"><a href="#cb3-73" tabindex="-1"></a><span class="co">#&gt; Resources - NG        0            0 43000          0          0      0</span></span>
+<span id="cb3-74"><a href="#cb3-74" tabindex="-1"></a><span class="co">#&gt;                   Petrol - Dist.</span></span>
+<span id="cb3-75"><a href="#cb3-75" tabindex="-1"></a><span class="co">#&gt; Crude dist.                    0</span></span>
+<span id="cb3-76"><a href="#cb3-76" tabindex="-1"></a><span class="co">#&gt; Diesel dist.                   0</span></span>
+<span id="cb3-77"><a href="#cb3-77" tabindex="-1"></a><span class="co">#&gt; Elect. grid                    0</span></span>
+<span id="cb3-78"><a href="#cb3-78" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.              0</span></span>
+<span id="cb3-79"><a href="#cb3-79" tabindex="-1"></a><span class="co">#&gt; NG dist.                       0</span></span>
+<span id="cb3-80"><a href="#cb3-80" tabindex="-1"></a><span class="co">#&gt; Oil fields                     0</span></span>
+<span id="cb3-81"><a href="#cb3-81" tabindex="-1"></a><span class="co">#&gt; Oil refineries                 0</span></span>
+<span id="cb3-82"><a href="#cb3-82" tabindex="-1"></a><span class="co">#&gt; Petrol dist.               26000</span></span>
+<span id="cb3-83"><a href="#cb3-83" tabindex="-1"></a><span class="co">#&gt; Power plants                   0</span></span>
+<span id="cb3-84"><a href="#cb3-84" tabindex="-1"></a><span class="co">#&gt; Resources - Crude              0</span></span>
+<span id="cb3-85"><a href="#cb3-85" tabindex="-1"></a><span class="co">#&gt; Resources - NG                 0</span></span>
+<span id="cb3-86"><a href="#cb3-86" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
+<span id="cb3-87"><a href="#cb3-87" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Industry&quot;</span></span>
+<span id="cb3-88"><a href="#cb3-88" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
+<span id="cb3-89"><a href="#cb3-89" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Product&quot;</span></span>
+<span id="cb3-90"><a href="#cb3-90" tabindex="-1"></a></span>
+<span id="cb3-91"><a href="#cb3-91" tabindex="-1"></a>EnergyMats_2000<span class="sc">$</span>matrix[[<span class="dv">3</span>]] <span class="co"># The Y matrix</span></span>
+<span id="cb3-92"><a href="#cb3-92" tabindex="-1"></a><span class="co">#&gt;                Residential Transport</span></span>
+<span id="cb3-93"><a href="#cb3-93" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.           0     14750</span></span>
+<span id="cb3-94"><a href="#cb3-94" tabindex="-1"></a><span class="co">#&gt; Elect - Grid          6000         0</span></span>
+<span id="cb3-95"><a href="#cb3-95" tabindex="-1"></a><span class="co">#&gt; NG - Dist.           25000         0</span></span>
+<span id="cb3-96"><a href="#cb3-96" tabindex="-1"></a><span class="co">#&gt; Petrol - Dist.           0     26000</span></span>
+<span id="cb3-97"><a href="#cb3-97" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
+<span id="cb3-98"><a href="#cb3-98" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Product&quot;</span></span>
+<span id="cb3-99"><a href="#cb3-99" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
+<span id="cb3-100"><a href="#cb3-100" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Sector&quot;</span></span></code></pre></div>
 </div>
 <div id="duplicate-for-purposes-of-illustration" class="section level3">
 <h3>Duplicate (for purposes of illustration)</h3>
@@ -673,28 +673,28 @@ The ECC data from UK in year <code>2000</code> can be duplicated for
 the data are unchanged, the additional rows serve to illustrate the
 functional programming aspects of the <code>matsindf</code> and
 <code>matsbyname</code> packages.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Energy <span class="ot">&lt;-</span> EnergyMats_2000 <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create rows for a fictitious country &quot;AB&quot;.</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Although the rows for &quot;AB&quot; are same as the &quot;GB&quot; rows,</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># they serve to illustrate functional programming with matsindf.</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(EnergyMats_2000 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="st">&quot;AB&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key =</span> Year, <span class="at">value =</span> matrix) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a column for a second year (2001).</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">2001</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">2000</span><span class="st">`</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key =</span> Year, <span class="at">value =</span> matrix, <span class="st">`</span><span class="at">2000</span><span class="st">`</span>, <span class="st">`</span><span class="at">2001</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Now spread to put each matrix in a column.</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key =</span> matrix.name, <span class="at">value =</span> matrix)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(Energy)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 4</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 5</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Country &lt;chr&gt; &quot;AB&quot;, &quot;AB&quot;, &quot;GB&quot;, &quot;GB&quot;</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Year    &lt;chr&gt; &quot;2000&quot;, &quot;2001&quot;, &quot;2000&quot;, &quot;2001&quot;</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ U       &lt;list&gt; &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;…</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ V       &lt;list&gt; &lt;&lt;matrix[11 x 12]&gt;&gt;, &lt;&lt;matrix[11 x 12]&gt;&gt;, &lt;&lt;matrix[11 x 12]&gt;&gt;,…</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Y       &lt;list&gt; &lt;&lt;matrix[4 x 2]&gt;&gt;, &lt;&lt;matrix[4 x 2]&gt;&gt;, &lt;&lt;matrix[4 x 2]&gt;&gt;, &lt;&lt;ma…</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>Energy <span class="ot">&lt;-</span> EnergyMats_2000 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="co"># Create rows for a fictitious country &quot;AB&quot;.</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="co"># Although the rows for &quot;AB&quot; are same as the &quot;GB&quot; rows,</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="co"># they serve to illustrate functional programming with matsindf.</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">rbind</span>(EnergyMats_2000 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="st">&quot;AB&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key =</span> Year, <span class="at">value =</span> matrix) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    <span class="co"># Create a column for a second year (2001).</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    <span class="st">`</span><span class="at">2001</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">2000</span><span class="st">`</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key =</span> Year, <span class="at">value =</span> matrix, <span class="st">`</span><span class="at">2000</span><span class="st">`</span>, <span class="st">`</span><span class="at">2001</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="co"># Now spread to put each matrix in a column.</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key =</span> matrix.name, <span class="at">value =</span> matrix)</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="fu">glimpse</span>(Energy)</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; Rows: 4</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; Columns: 5</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; $ Country &lt;chr&gt; &quot;AB&quot;, &quot;AB&quot;, &quot;GB&quot;, &quot;GB&quot;</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; $ Year    &lt;chr&gt; &quot;2000&quot;, &quot;2001&quot;, &quot;2000&quot;, &quot;2001&quot;</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; $ U       &lt;list&gt; &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;…</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; $ V       &lt;list&gt; &lt;&lt;matrix[11 x 12]&gt;&gt;, &lt;&lt;matrix[11 x 12]&gt;&gt;, &lt;&lt;matrix[11 x 12]&gt;&gt;,…</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; $ Y       &lt;list&gt; &lt;&lt;matrix[4 x 2]&gt;&gt;, &lt;&lt;matrix[4 x 2]&gt;&gt;, &lt;&lt;matrix[4 x 2]&gt;&gt;, &lt;&lt;ma…</span></span></code></pre></div>
 </div>
 <div id="verify-data" class="section level3">
 <h3>Verify data</h3>
@@ -711,23 +711,23 @@ balance is verified by</p>
 <p>Energy balance verification can be implemented with
 <code>matsbyname</code> functions and <code>tidyverse</code> functional
 programming:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Check <span class="ot">&lt;-</span> Energy <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">W =</span> <span class="fu">difference_byname</span>(<span class="fu">transpose_byname</span>(V), U),</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Need to change column name and type on y so it can be subtracted from row sums of W</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">err =</span> <span class="fu">difference_byname</span>(<span class="fu">rowsums_byname</span>(W), </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">rowsums_byname</span>(Y) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">setcolnames_byname</span>(<span class="st">&quot;Industry&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">setcoltype</span>(<span class="st">&quot;Industry&quot;</span>)),</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">EBalOK =</span> <span class="fu">iszero_byname</span>(err)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>Check <span class="sc">%&gt;%</span> <span class="fu">select</span>(Country, Year, EBalOK)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Country Year EBalOK</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      AB 2000   TRUE</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2      AB 2001   TRUE</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3      GB 2000   TRUE</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4      GB 2001   TRUE</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(Check<span class="sc">$</span>EBalOK <span class="sc">%&gt;%</span> <span class="fu">as.logical</span>())</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>Check <span class="ot">&lt;-</span> Energy <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="at">W =</span> <span class="fu">difference_byname</span>(<span class="fu">transpose_byname</span>(V), U),</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="co"># Need to change column name and type on y so it can be subtracted from row sums of W</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    <span class="at">err =</span> <span class="fu">difference_byname</span>(<span class="fu">rowsums_byname</span>(W), </span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                            <span class="fu">rowsums_byname</span>(Y) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>                              <span class="fu">setcolnames_byname</span>(<span class="st">&quot;Industry&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">setcoltype</span>(<span class="st">&quot;Industry&quot;</span>)),</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>    <span class="at">EBalOK =</span> <span class="fu">iszero_byname</span>(err)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  )</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>Check <span class="sc">%&gt;%</span> <span class="fu">select</span>(Country, Year, EBalOK)</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt;   Country Year EBalOK</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 1      AB 2000   TRUE</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 2      AB 2001   TRUE</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 3      GB 2000   TRUE</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; 4      GB 2001   TRUE</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="fu">all</span>(Check<span class="sc">$</span>EBalOK <span class="sc">%&gt;%</span> <span class="fu">as.logical</span>())</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>This example demonstrates that energy balance can be verified for
 <em>all</em> combinations of Country and Year with a few lines of code.
 In fact, the exact same code can be applied to the <code>Energy</code>
@@ -746,31 +746,31 @@ Owen, and Brockway <span class="citation">(2018)</span>.</p>
 <p><span class="math display">\[\mathbf{\eta} =
 \widehat{\mathbf{U}^\mathrm{T} \mathbf{i}}^{\mathrm{-}1}
 \mathbf{g}\]</span></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Etas <span class="ot">&lt;-</span> Energy <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">g =</span> <span class="fu">rowsums_byname</span>(V),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">eta =</span> <span class="fu">transpose_byname</span>(U) <span class="sc">%&gt;%</span> <span class="fu">rowsums_byname</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">hatize_byname</span>(<span class="at">keep =</span> <span class="st">&quot;rownames&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">invert_byname</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">matrixproduct_byname</span>(g) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">setcolnames_byname</span>(<span class="st">&quot;eta&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">setcoltype</span>(<span class="st">&quot;Efficiency&quot;</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Country, Year, eta)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>Etas<span class="sc">$</span>eta[[<span class="dv">1</span>]]</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                         eta</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Crude dist.       0.9884332</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Diesel dist.      0.9774194</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elect. grid       0.9804688</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc. 0.9518282</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NG dist.          0.9987820</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Oil fields        0.9485771</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Oil refineries    0.8921933</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Petrol dist.      0.9719626</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Power plants      0.3975155</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Industry&quot;</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Efficiency&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>Etas <span class="ot">&lt;-</span> Energy <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="at">g =</span> <span class="fu">rowsums_byname</span>(V),</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    <span class="at">eta =</span> <span class="fu">transpose_byname</span>(U) <span class="sc">%&gt;%</span> <span class="fu">rowsums_byname</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>      <span class="fu">hatize_byname</span>(<span class="at">keep =</span> <span class="st">&quot;rownames&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">invert_byname</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>      <span class="fu">matrixproduct_byname</span>(g) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>      <span class="fu">setcolnames_byname</span>(<span class="st">&quot;eta&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">setcoltype</span>(<span class="st">&quot;Efficiency&quot;</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="fu">select</span>(Country, Year, eta)</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>Etas<span class="sc">$</span>eta[[<span class="dv">1</span>]]</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;                         eta</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; Crude dist.       0.9884332</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; Diesel dist.      0.9774194</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; Elect. grid       0.9804688</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc. 0.9518282</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; NG dist.          0.9987820</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; Oil fields        0.9485771</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; Oil refineries    0.8921933</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; Petrol dist.      0.9719626</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; Power plants      0.3975155</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Industry&quot;</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Efficiency&quot;</span></span></code></pre></div>
 <p>Note that only a few lines of code are required to perform the same
 series of matrix operations on every combination of <code>Country</code>
 and <code>Year</code>. In fact, the same code will be used to calculate
@@ -832,36 +832,36 @@ types</td>
 </table>
 <p>Prior to <code>expand</code>ing, it is usually necessary to
 <code>gather</code> columns of matrices.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>etas_forgraphing <span class="ot">&lt;-</span> Etas <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key =</span> matrix.names, <span class="at">value =</span> matrix, eta) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_to_tidy</span>(<span class="at">matnames =</span> <span class="st">&quot;matrix.names&quot;</span>, <span class="at">matvals =</span> <span class="st">&quot;matrix&quot;</span>, </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">rownames =</span> <span class="st">&quot;Industry&quot;</span>, <span class="at">colnames =</span> <span class="st">&quot;etas&quot;</span>, </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">rowtypes =</span> <span class="st">&quot;rowtype&quot;</span>, <span class="at">coltypes =</span> <span class="st">&quot;Efficiencies&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Eliminate columns we no longer need.</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">matrix.names =</span> <span class="cn">NULL</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">etas =</span> <span class="cn">NULL</span>, </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">rowtype =</span> <span class="cn">NULL</span>, </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Efficiencies =</span> <span class="cn">NULL</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">eta =</span> matrix</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare to Figure 8 of Heun, Owen, and Brockway (2018)</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>etas_forgraphing <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;GB&quot;</span>, Year <span class="sc">==</span> <span class="dv">2000</span>)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 9 × 4</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Country Year  Industry            eta</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 GB      2000  Crude dist.       0.988</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 GB      2000  Diesel dist.      0.977</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 GB      2000  Elect. grid       0.980</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 GB      2000  Gas wells &amp; proc. 0.952</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 GB      2000  NG dist.          0.999</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 GB      2000  Oil fields        0.949</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 GB      2000  Oil refineries    0.892</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8 GB      2000  Petrol dist.      0.972</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9 GB      2000  Power plants      0.398</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>etas_forgraphing <span class="ot">&lt;-</span> Etas <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key =</span> matrix.names, <span class="at">value =</span> matrix, eta) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="fu">expand_to_tidy</span>(<span class="at">matnames =</span> <span class="st">&quot;matrix.names&quot;</span>, <span class="at">matvals =</span> <span class="st">&quot;matrix&quot;</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>                 <span class="at">rownames =</span> <span class="st">&quot;Industry&quot;</span>, <span class="at">colnames =</span> <span class="st">&quot;etas&quot;</span>, </span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>                 <span class="at">rowtypes =</span> <span class="st">&quot;rowtype&quot;</span>, <span class="at">coltypes =</span> <span class="st">&quot;Efficiencies&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    <span class="co"># Eliminate columns we no longer need.</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>    <span class="at">matrix.names =</span> <span class="cn">NULL</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    <span class="at">etas =</span> <span class="cn">NULL</span>, </span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    <span class="at">rowtype =</span> <span class="cn">NULL</span>, </span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    <span class="at">Efficiencies =</span> <span class="cn">NULL</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>    <span class="at">eta =</span> matrix</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>  )</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co"># Compare to Figure 8 of Heun, Owen, and Brockway (2018)</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>etas_forgraphing <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;GB&quot;</span>, Year <span class="sc">==</span> <span class="dv">2000</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; # A tibble: 9 × 4</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt;   Country Year  Industry            eta</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; 1 GB      2000  Crude dist.       0.988</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt; 2 GB      2000  Diesel dist.      0.977</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt; 3 GB      2000  Elect. grid       0.980</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt; 4 GB      2000  Gas wells &amp; proc. 0.952</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt; 5 GB      2000  NG dist.          0.999</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt; 6 GB      2000  Oil fields        0.949</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#&gt; 7 GB      2000  Oil refineries    0.892</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="co">#&gt; 8 GB      2000  Petrol dist.      0.972</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="co">#&gt; 9 GB      2000  Power plants      0.398</span></span></code></pre></div>
 <p><code>etas_forgraphing</code> is a data frame of efficiencies, one
 for each Country, Year, and Industry, in a format that is amenable to
 plotting with packages such as <a href="https://ggplot2.tidyverse.org">ggplot</a>.</p>
@@ -870,29 +870,29 @@ plotting with packages such as <a href="https://ggplot2.tidyverse.org">ggplot</a
 <h3>Report</h3>
 <p>The following code creates a bar graph of efficiency results for the
 UK in 2000:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>etas_UK_2000 <span class="ot">&lt;-</span> etas_forgraphing <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;GB&quot;</span>, Year <span class="sc">==</span> <span class="dv">2000</span>) </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>etas_UK_2000 <span class="sc">%&gt;%</span> </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes_string</span>(<span class="at">x =</span> <span class="st">&quot;Industry&quot;</span>, <span class="at">y =</span> <span class="st">&quot;eta&quot;</span>, </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">fill =</span> <span class="st">&quot;Industry&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;Industry&quot;</span>)) <span class="sc">+</span> </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="fu">expression</span>(eta[UK<span class="sc">*</span><span class="st">&quot;,&quot;</span><span class="sc">*</span><span class="dv">2000</span>]), <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span> </span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">rep</span>(<span class="st">&quot;white&quot;</span>, <span class="fu">nrow</span>(etas_UK_2000))) <span class="sc">+</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">rep</span>(<span class="st">&quot;gray20&quot;</span>, <span class="fu">nrow</span>(etas_UK_2000))) <span class="sc">+</span> </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="cn">FALSE</span>, <span class="at">colour =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.4</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: `aes_string()` was deprecated in ggplot2 3.0.0.</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Please use tidy evaluation idioms with `aes()`.</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ See also `vignette(&quot;ggplot2-in-packages&quot;)` for more information.</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; generated.</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use &quot;none&quot; instead as</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; of ggplot2 3.3.4.</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; generated.</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>etas_UK_2000 <span class="ot">&lt;-</span> etas_forgraphing <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;GB&quot;</span>, Year <span class="sc">==</span> <span class="dv">2000</span>) </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>etas_UK_2000 <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes_string</span>(<span class="at">x =</span> <span class="st">&quot;Industry&quot;</span>, <span class="at">y =</span> <span class="st">&quot;eta&quot;</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>                              <span class="at">fill =</span> <span class="st">&quot;Industry&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;Industry&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="fu">expression</span>(eta[UK<span class="sc">*</span><span class="st">&quot;,&quot;</span><span class="sc">*</span><span class="dv">2000</span>]), <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span> </span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">rep</span>(<span class="st">&quot;white&quot;</span>, <span class="fu">nrow</span>(etas_UK_2000))) <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">rep</span>(<span class="st">&quot;gray20&quot;</span>, <span class="fu">nrow</span>(etas_UK_2000))) <span class="sc">+</span> </span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="cn">FALSE</span>, <span class="at">colour =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.4</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; Warning: `aes_string()` was deprecated in ggplot2 3.0.0.</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; ℹ Please use tidy evaluation idioms with `aes()`.</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; ℹ See also `vignette(&quot;ggplot2-in-packages&quot;)` for more information.</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; generated.</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use &quot;none&quot; instead as</span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; of ggplot2 3.3.4.</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; generated.</span></span></code></pre></div>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAYAAAAUg66AAAAEDmlDQ1BrQ0dDb2xvclNwYWNlR2VuZXJpY1JHQgAAOI2NVV1oHFUUPpu5syskzoPUpqaSDv41lLRsUtGE2uj+ZbNt3CyTbLRBkMns3Z1pJjPj/KRpKT4UQRDBqOCT4P9bwSchaqvtiy2itFCiBIMo+ND6R6HSFwnruTOzu5O4a73L3PnmnO9+595z7t4LkLgsW5beJQIsGq4t5dPis8fmxMQ6dMF90A190C0rjpUqlSYBG+PCv9rt7yDG3tf2t/f/Z+uuUEcBiN2F2Kw4yiLiZQD+FcWyXYAEQfvICddi+AnEO2ycIOISw7UAVxieD/Cyz5mRMohfRSwoqoz+xNuIB+cj9loEB3Pw2448NaitKSLLRck2q5pOI9O9g/t/tkXda8Tbg0+PszB9FN8DuPaXKnKW4YcQn1Xk3HSIry5ps8UQ/2W5aQnxIwBdu7yFcgrxPsRjVXu8HOh0qao30cArp9SZZxDfg3h1wTzKxu5E/LUxX5wKdX5SnAzmDx4A4OIqLbB69yMesE1pKojLjVdoNsfyiPi45hZmAn3uLWdpOtfQOaVmikEs7ovj8hFWpz7EV6mel0L9Xy23FMYlPYZenAx0yDB1/PX6dledmQjikjkXCxqMJS9WtfFCyH9XtSekEF+2dH+P4tzITduTygGfv58a5VCTH5PtXD7EFZiNyUDBhHnsFTBgE0SQIA9pfFtgo6cKGuhooeilaKH41eDs38Ip+f4At1Rq/sjr6NEwQqb/I/DQqsLvaFUjvAx+eWirddAJZnAj1DFJL0mSg/gcIpPkMBkhoyCSJ8lTZIxk0TpKDjXHliJzZPO50dR5ASNSnzeLvIvod0HG/mdkmOC0z8VKnzcQ2M/Yz2vKldduXjp9bleLu0ZWn7vWc+l0JGcaai10yNrUnXLP/8Jf59ewX+c3Wgz+B34Df+vbVrc16zTMVgp9um9bxEfzPU5kPqUtVWxhs6OiWTVW+gIfywB9uXi7CGcGW/zk98k/kmvJ95IfJn/j3uQ+4c5zn3Kfcd+AyF3gLnJfcl9xH3OfR2rUee80a+6vo7EK5mmXUdyfQlrYLTwoZIU9wsPCZEtP6BWGhAlhL3p2N6sTjRdduwbHsG9kq32sgBepc+xurLPW4T9URpYGJ3ym4+8zA05u44QjST8ZIoVtu3qE7fWmdn5LPdqvgcZz8Ww8BWJ8X3w0PhQ/wnCDGd+LvlHs8dRy6bLLDuKMaZ20tZrqisPJ5ONiCq8yKhYM5cCgKOu66Lsc0aYOtZdo5QCwezI4wm9J/v0X23mlZXOfBjj8Jzv3WrY5D+CsA9D7aMs2gGfjve8ArD6mePZSeCfEYt8CONWDw8FXTxrPqx/r9Vt4biXeANh8vV7/+/16ffMD1N8AuKD/A/8leAvFY9bLAAAAOGVYSWZNTQAqAAAACAABh2kABAAAAAEAAAAaAAAAAAACoAIABAAAAAEAAAEgoAMABAAAAAEAAAEgAAAAAKtAJY0AAD20SURBVHgB7Z0HvBXF9ccnJiYRCF2w0QRFUVFQfCBiRRQNiKIRLBEx2A1YAAsq8uwaS1RsUSxYEAEjfESiiA0UFFGjGBQ7ShFBAVFTeP/9Tv5zs+++W3bvzgzv3nvO5/Pe3bt3dspvZ8+eOW1+VhWQEhIEBAFBYCMgsMlGaFOaFAQEAUFAIyAMSCaCICAIbDQEhAFtNOilYUFAEBAGJHNAEBAENhoCwoA2GvTSsCAgCAgDkjkgCAgCGw2BX2y0li01vGrVqoJq+uUvf6nwQPjXv/5V0PVRLvr5z3+uNt10U/Xjjz9GKV5wmV//+tfqn//8p9qwYUPBdeS70Adev/jFLxR/LvH62c9+pn71q185x4s2/vOf/6h///vf+aAt+HewYo799NNPBdeR70KDF20U4rHDvKlXr17WZoqeARUKft26dTWg69atywpO0h/q1Kmj+Pvuu++SVpX1+k022UQ1btxYP7SFYpG18tAPTCIeJpd48UDBTF3ixQPbqFEj9cMPP2gmFBqi1cP69etrxvD9999brTdcGQ83eK1ZsyZ82uoxL1Dm8Pr16528rGUJZvV2SWWCgCAQBwFhQHHQkrKCgCBgFQHvDOjZZ5/NuS5mGTF79mw1Z84cJyKfVfSkMkFAEEiEgFcGNGnSJDVmzBitnMvUa9blgwYNUrNmzVLjx49XI0aMKEjxlaluOScICAK1DwEvSmiUl5deeqn65ptvciIwYcIEVVFRoYYNG6bLnXrqqWru3Lmqa9euOa+THwUBQaA4EfDCgDBHwkQOPfRQtf/++2dFavHixapXr16p3zt37qwWLlxYjQFde+21avXq1bpMy5YttcSUuiDGARYXzIoNGjSIcVW8orQBuWwDMymEVQ+LiCvCeoTFLe5Ypk6dGtlyRv20E8c1Yq+99lKtWrWKPOwwXptttlnk6+IWZCxYqeLiFacdLFSMx2UbjAPCClqImwfPfi7ywoDwiejbt2+ufujfli1bpjBfGuJ4yZIl5qv+/Pjjj9WKFStS57gJhRA3jr9Cr4/Sprl5Ltsw/TAMwny3/VkoXnfddZf68ssvbXcnVd/111+v2rVrl/oe9cC8gKKWj1sOvLj/Lu899buew9QPFYpXPqblhQFFvXk8RGGOydIt/S3FhA7T0qVL9deVK1fqZZ4BLFwm0zFtQeH2MpUz55CWmOxIGlEJ/wneTvTNFTEJmzdvrn1BXPoBNWnSRBsP4vroMAEHBXq9Cy+80CoEOKB269ZNrV27Nha+3PdmzZppXyOcN13R5ptvrv2AXPro/OY3v9HPh8v5BQNt2rSp+vbbb2NJpgZXhI9cVKsYEAMNezZz3KJFi1z9T/3GZGK51qVLFz3BUj9YOPjqq6/UggULNLOKyrBolrLmL2o3YChvvfWW/otyDQwX8RgFflSvWzDt2bNnlOqljCDgFIGNzoAM94b59OjRQ02fPl1/4nGLKf6aa66JBcCQIUPUvvvuG+uafIWnTZumGRDlqJ9loCsaPny4XmI+8MADqmHDhpGagQlFdZMH1z322EMYUCRk/RdCoo/6kuPFg4SRz7gTHgXPmUtdYbitKMcbnQGNGzdOr5OxfPFWxgdo4MCBev08YMAA1aZNmyjj8FaGhx3leBSdVpxOIb1cccUVqUtgPlgAbdPJJ58cWVKy3bbUlx+B0047zWkoCi/02mRV9s6AXn755Wp3gTe+IRRdlZWVel2P7sdYkczvteWzbdu2mkna7A/6mzADslm31FU8CPCC69Onjzr88MOtdvrrr7+2roez0UHvDChKp1GuCQkC5YoA7iWoI2zSF198YbM6a3XVSgZkbXRSUVYEPvnkEzV06NCsv6f/wJsZiqprouzkyZP5cE7vvfeewocsCqHk5wVHlHpUpf3WW2+t9WZR6pcy8RAQBhQPr5IpjaITE3H//v3VlltuaXVcMATCaeIwqyQdePHFF9Xjjz+epIqc1+I8i+JeyD4CwoDsY1pUNR555JHWHy5CamBAPmmrrbZSBDrbpuOPP952lVJfCAFhQCEw5LC4EXBhtDBLz+JGpvb23ms0fO2FQXomCAgCGwMBYUAbA3VpUxAQBDQCwoBkIggCgsBGQ0AY0EaDXhoWBASBoldCm2hbcq+4JtpwrZREkepCmRrGBl8YH3hxb1zjRbS2yWwQHqPNY/Ay8yxqvYybfsW9Lmr9hZYDrzh9MthyHTjEpXzXFD0DMgCZz7gAxSnvow1umOuHlvrzTYw4uGQr6wsv12MBL9JRvPTSS9mGWuM8AZ/4WkVNrsYYbIdf1OhUcIJ24twXU9Z8ZqozybmiZ0DsVwSRjsI10YZr5zrSikSdtIWOlwfD5eZ/pl/cG9d4EUPnAy88ra+++mozNOufSL0HHXSQ9XrTKwQv88yk/5bpO5IPUffMl0JwzidtFT0DygSanBMEXCEwceJEtcMOO1itntQrN998s9U6i6UyYUDFcqekn7UCASQC2/ozV8ubWgFYnk7E1yrlqVB+FgQEAUEgKgLCgKIiJeUEAUHAOgLCgKxDKhUKAoJAVASEAUVFSsoJAoKAdQSEAVmHVCoUBASBqAgIA4qKlJQTBAQB6wgIA7IOqVQoCAgCUREQBhQVKSknCAgC1hHwxoBwAWfPLzYbzOXSTaLwV199Ve9yan20UqEgIAjUKgS8eEITQzV48GC10047KbY5xp39xhtvrBF0SYzKiSeeqLp37663aGYf8ltuuaVWASadEQQEAXsIeJGASFJeUVGhRo0apcaOHauD4TLt+jlz5kzVoUMHxS6pY8aM0VsUL1q0yN5opSZBQBCoVQh4kYCIJO7Vq1dq4GxtvHDhwhpbxLI9zIcffqiWL1+ud0clBUKjRo1S13Fw+eWXp/bCbt26tTr99NP17+x57poaNGjgPI1FnTp1nO/dTTyTj80f2V7adaqMunXrxspvU8gcMRHhhVwb5xrwcp2KBbxoJyqZ/hARX0hmg3x7r3lhQMuWLVP169dPjZnjJUuWpL6bg913311LQOwNj57ojDPOUM2aNTM/60+Y0qpVq/RxkyZNUhPc9USnQR9tcMPNTdeDdPTPx1h8tOEDL9rwMRZfbcRpx8xFrimEAZnrs01jLwyIaF9y0BiCK7L3ezrde++9WvKZMmWKQqIZOXKk2mabbaptU3vTTTdVu2zp0qX6O4zJNa1evVpt2LDBaTPs2Ok6txHMHf2aa+JF4Rov5onr3EbkaGITR9cEXoU85HH6tXbt2tQLPMp1SH9NmzbV489lPMpWV758QF50QAzASC10lGM2kkun+fPnq379+imWOmyHS4KmefPmpReT74KAIFAiCHhhQD169FDTp0/Xb6qVK1dqU3ynTp00hHznD8L69eabb+pjpKQ33nijhp5I/yj/BAFBoCQQ8LIE69mzp/YBQrfDWnLAgAGqTZs2GsBx48YpxDwsX3369FG333671v2wFOnSpYvq1q1bSQAtgxAEBIGaCHhhQOS7rays1PoddD/hXR+GDx+e6hVLr4suukhLSpQJl0sVkgNBQBAoGQS8MCCDVlTTLzsKCAkCgkDpI+BFB1T6MMoIBQFBoBAEhAEVgppcIwgIAlYQEAZkBUapRBAQBApBQBhQIajJNYKAIGAFAWFAVmCUSgQBQaAQBIQBFYKaXCMICAJWEBAGZAVGqUQQEAQKQUAYUCGoyTWCgCBgBQGvjohWepxWiXFazBd1m3ZZQV9pI196gYIqDl1EWIprD3DCYXzgxb0pBbzI5mB7P/jQLU8dmrmcOuHggPkVpx2zbz3jN8dxupXv/hc9AzIDNJ9xwIlb1kcb9Ml1O67rN7j6aMdHGz7uic824mBmyvJpjs39jfKZ75qiZ0Amd47rnDCATRuu87WQc6WQvCtRJoMpQ24mNglwTdwb13iRqydf1r2k4/SJV9K+5rsevMwzk68svyMxEULFfClkXuaTtEUHFOUuSBlBQBBwgoAwICewSqWCgCAQBQFhQFFQkjKCgCDgBAFhQE5glUoFAUEgCgLCgKKgJGUEAUHACQLCgJzAKpUKAoJAFARimeG//vprxTY4bG7WsmVLbaKL0oiUEQQEAUEgEwKRGNBHH32kjj/+eEWieDYKxO/iiy++UAcccIC6+eabNUPKVLmcEwQEAUEgFwKRlmBnnXWWGj16tHrnnXfUc889p1544QUFU9p8883V+PHjc9UvvwkCgoAgkBWBSAwIiYf93NOJbXN87Eia3q58FwQEgdJAINIS7JRTTtF7dvXt21dtscUWepvlTz/9VE2ePFlvMhgFCly52WiQ2BAYFy7emYhyr7/+ui635557Zi2X6Vo5JwgIAsWFQCQJ6Oijj9ZLLZZcixcv1vqfbbfdVr366quqUaNGeUdM7MmgQYPUrFmzdD0jRozIGCO0fv16deqpp6pXXnlFb2SI3slHzFLeAUgBQUAQcIJAJAmIltu1a6f3bC/ECjZhwgRVUVGhdz+lLpjM3Llza2y7/NRTT6n27durCy64gGKKXVMXLVqkOnbsqL/LP0FAECgtBCIxoKRWMKSmXr16pZBDn7Rw4cIaDGjevHmqX79+6rXXXtPLvBNPPFFv5Zy6MDgYOXKk+uabb/Sptm3bqnPOOUcfY6FzTQ0bNqzRH9tt1qlTR7F7rEti+Vu/fn2XTei6kY7JPeSScAmJk9+mkL6QCyfqppqF1G+uAa986StM2UI/69WrF2nVYuo3/WH8hWQ2yJepINLsSGoFW7ZsWbUJz+Q3TMQMlE/8jB599FH19NNPq2nTpmnTf3rqAJIiMan5M+CE65BjQUAQKB4EIklAuaxgH3zwQd7RwjTIqWKI+jK95Smz3XbbqXPPPVcXZZ/4F198UR1yyCHmUnXVVVeljjlgSQh99913+tPlPyx+GzZscNmEQg+WznRtN0helzVr1tiutkZ9q1evdo4Xkq/rXFDk0Fm7dm2N8dk+AV6FSBlx+rFu3TpFO1EJaZmcPozfRT6gSAwoqRWsadOmatWqVakxc9yiRYvUd3OAk2OHDh3MV7X99tvrpVqYAaV+lANBQBAoegQiLcGMFYy19pw5c9Tbb7+tQzGiWsF69Oihpk+frt9UK1eu1HV06tRJg8d3/qB99tlHOzoiZfDWwRomCmgNjfwTBEoSgUgSEEroE044oVooBgwFv54ooRg9e/bUZvWBAwdq3c2AAQNUmzZtNKBYuhDzhg0bpn2NUE4b83v37t0V1woJAoJAaSIQiQEZJfTBBx9cDQV0NIRiYFbPRezyUFlZqdeR6H7Cuz4MHz48dSmMaNSoUVoPgpLZtXUj1bAcCAKCwEZBINISLJcSOk4oBqa8MPPJNmJM0cJ8sqEj5wWB0kEgkgSUVAldOnDJSAQBQcAmApEYEEpolMaEUuBUiBRjQjFwzhMSBAQBQaAQBCIxICqG4cBsMKkbwvcG50FixIQEAUFAEIiLQCQdEKb3XXbZRZvEjznmGK0kpiFit8aOHRu3TSkvCAgCgoBGIBIDuu222zSzIQvizjvvrI488kjtpyMYCgKCgCCQBIFIDAhLF3mACKm45JJLdD6fk046ybmbfZKBybWCgCBQ+xGIxICIUO/Tp49OjcGQ8OlB73PZZZfV/hFKDwUBQaDWIhBJCY0ZvmvXrjoozYwED2gyFoq/jkFEPgUBQSAuApEYEJVmisk69thj47ZnvbyJqvfBCGnDdQoQvMH5c0kspYlwdk3cG9d4kasninNrkrH6xCtJP6NcC17mmYlSnrFDzJdCcM53/yMtwbJ1dMyYMTrR2A033JCtiPPzpC8wf64bc50qwfTfdTuu6/c1DtqRsRi0o32CV9w/g3Pc60z5XD2LLAFlquS8885T/Ll+Y2dq25wzuWB85I6mDUB1SeRcyZdFLmn7ZBvwgRf3phTwIk8V2Rlck5nLLtthfsVpxzzbjN9FPqBIEtDs2bMzYkIysBkzZijEOiFBQBAQBOIiEIkBkSR+ypQp1ep+5JFHVLdu3Zzn/K3WqHwRBASBkkIg0hKMPM0klUcRtd9++ynSc5BAnl1Sd91115ICRAYjCAgC/hCIxIC22WYbvdTq3bu3XgfySTIyH5Ynf1BIS4KAIOAbgUhLMDpFDmeyIKLv6d+/vzAf33dK2hMEShCBSBLQySefrJYsWaKHT6bCQw89VO211176O6laSaEqJAgIAoJAXAQiMaDTTjstFQGf3kDr1q3TT8l3QUAQEAQiIRCJAbFR4PLly1MVoowmqTwxYi1btkydlwNBQBAQBOIgEIkBkYIjvI8XDkmffPKJ3rHimWee0cnK4jQqZQUBQUAQAIFIDAilcyYizoOkZGypIyQICAKCQFwEIlvBMlVMNPxnn32W6aca53D9x6Oa7IpRXLoXLVqUSv9RozI5IQgIAiWBQMEMiHiiiRMn6mT1+ZBgr/NBgwbppPbsIzZixIicMUIkQKMMO68KCQKCQOkiEGkJRh7ozz//PIUCgWmkZz3wwAMVu5zmowkTJqiKiorUUo2NDOfOnatzDGW69rrrrlONGzfO9JOcEwQEgRJCIBIDGj16dLUIWqxg7JIR1ROarXwI5TDUuXNnxRbMJDlLp6lTp6pGjRopvK8z0dChQ/VOHPzWrl07vZMqx+vXr+fDKcEUTX4UVw3Vq1dPrVu3zlX1ul6cSX1sp9SkSRPnsYJsduk67xB4NWjQwOk9oXLwypc/J2knwAufvqiqE9ojD1CcDA1YxnfbbTfd1XxZBCIxoB133DHRuJctW6bq16+fqoNj49iYOhkccG7y5Ml6pw32jM9EbAuEMyQEQyBVAsSS0DXRluv0EozD9VgYg8HNJWY+2jB4ubwvpYYXgeWTJk1yduuPOOIIvYsODeS7LzkZEDf3iSee0HFfq1evzloZCclyvVGRGsKTEW6anpWNc1deeaU6//zza/wWRoqk+GEiJQi0Zs2a8Gknx+yD5po5IMnFyddSyEAxAqxdu7aQS2Ndgy7PNV7ff/+989xG4OVaKgVY8Mr3wMa6ARkKG7zatm2rHn/88Qwlkp1CXYPUw1ggVku5KCcDevLJJ9WQIUNU+/btczKFfOIZUsuqVatS/eA47FfED59++ql6//331TnnnKPLcdMRR1euXKmZUupiORAEBIHECLCKYLlvm+KqKHIyIJKNffTRR9V2Qy2kwz169NCBrHzyJsEUf8011+iqYDAQ+pwXXnhBH/OPDQ/r1KmjrWepk3IgCAgCJYVATjM8e8IjlSSlnj17qrp166qBAwcqLGBHHXWUDuWgXnQ9mOaFBAFBoPwQyCkBwTgWLFig7r//foX+Y/fdd08tnVq1ahUZLbTo7CWG3gHdTzi7/vDhwzPWc8YZZ2Q8LycFAUGgdBDIyYDeeustNXjwYPXuu+/WMMMVoizDBCgkCAgCgoBBICcDuvPOO9WZZ56p0Ji79k8wHZJPQUAQKB8EcjIgpB98c/ADYm94IUFAEBAEbCKQkwERbMqfkCAgCAgCLhDIaQVz0aDUKQgIAoKAQUAYkEFCPgUBQcA7AsKAvEMuDQoCgoBBQBiQQUI+BQFBwDsCwoC8Qy4NCgKCgEEgpxXMFKrNn8SLQenR9S767DrvDH0m98ymm27qovupOgkYjJrLKXVRAQfcG9f+Y0RblxJeBcAc6xLwCkcixLo4YmHqN89lvkuKngGZSHzzmW/ASX4PpxRJUk+ua01+m1xlkv7mK78N96QQj/k44+OeuE754ROvOGMvpCx4ub4n3A/zPOaLji96BmQyrkVJdF/IDQtfQ1uubx43zjWjY4L4wiuMn4tjwSseqr7wMs9lvnxAogOKd/+ktCAgCFhEQBiQRTClKkFAEIiHgDCgeHhJaUFAELCIgDAgi2BKVYKAIBAPAWFA8fCS0oKAIGARAWFAFsGUqgQBQSAeAsKA4uElpQUBQcAiAsKALIIpVQkCgkA8BIQBxcNLSgsCgoBFBIQBWQRTqhIEBIF4CHgLxfjpp5/0Fs8EJ3bp0iVrACEhAvPnz9fBpR07dnQezBgPLiktCAgCNhHwIgH98MMPeofTWbNm6U0IR4wYkTGmatmyZWrAgAF659SpU6eq4447zvm+3zbBlLoEAUEgHgJeGNCECRNURUWFGjVqlN5yef369Wru3Lk1ejpx4kR12GGHqXPPPVeXZbvmZ599tkY5OSEICAKlgYCXJdjixYtVr169Uoh17txZLVy4UHXt2jV1jgO2bQ7nj2E3VqSnMA0ZMkStWLFCn2rfvr268sor9XF6ufA1to6bNGmi8qUXSNpWvXr11Lp165JWk/N6cg41bNgwZxkbPzZt2lRtsonbdxybXbrO00REd4MGDWxAkrUO5j14hed/1sIJfqhfv77OBeWyHXJNMRYI1Usu8sKAWFoxcEMcs99YOvFgGHr++ed1md69e5tT+hOm06xZM33csmXLVFoJk3+kWmHLX9BPuU7H4SO/TThfi2WIqlXnEy+X9wW8XKdIof8+UqTwnDAe13iZseRrxwsDQmoI30BAyJXB8KmnntK6ohtvvFEhEYTp/PPPD39VS5cu1d/Zd941rVmzxnnyKyS5H3/80elQwN+1lMUAkGDzTcCkA2U5n+8tm7QNHqZSwsvk6kmKS7brqZ97D+XLB+SFASGOrVq1KtVfjlu0aJH6Hj546KGH1IwZM9Stt96qmjdvHv5JjgUBQaDEEHC7QP9/sHr06KGmT5+u3+wrV67UVq5OnTrpX/nOH/T000+rmTNnqjvuuEOYj0ZE/gkCpY2AFwmoZ8+eavbs2WrgwIFaKYmpvU2bNhrZcePGaZ+gYcOGqfvuu08tX75cW8IM7P3791dDhw41X+VTEBAESggBLwyILPmVlZUKPQ26n3BW/uHDh6fgfOKJJ1LHciAICAKlj4AXBmRgxGQqJAgIAoKAQcCLDsg0Jp+CgCAgCIQREAYURkOOBQFBwCsCwoC8wi2NCQKCQBgBYUBhNORYEBAEvCIgDMgr3NKYICAIhBEQBhRGQ44FAUHAKwLCgLzCLY0JAoJAGAFhQGE05FgQEAS8IuDVEdHFyOrWraurzRVdb6vdOnXqOM/XQvRwOC2Jrb6H6yE7gQ+8uDcu884wJvDadNNNw8Ozfoznvi+8rHc+rUJy9fjAyzyXac3X+Fr0DMikFjD5R2qM0OIJ2nCdXoJUGeHUJRa7n6qKfDA+8OLeCF4p2PMemLmct2CCAtx3H/PLjCVfAr+iZ0DmQeLBdU2mLZftMDlcTxCYQinhBUN1SdQveEVHOPyCy5cRU3RA0XGVkoKAIGAZAWFAlgGV6gQBQSA6AsKAomMlJQUBQcAyAsKALAMq1QkCgkB0BIQBRcdKSgoCgoBlBIQBWQZUqhMEBIHoCAgDio6VlBQEBAHLCAgDsgyoVCcICALRERAGFB0rKSkICAKWERAGZBlQqU4QEASiI+AtFIPtc9944w0dnNilS5esAXFRy0UfopQUBASB2oqAFwbEfueDBw9WO+20k/rqq6/UxIkTFfu+p0dKRy1XW8GUfgkCgkA8BLwswSZMmKAqKirUqFGj1NixY9X69evV3Llza/Q0arkaF8oJQUAQKEoEvEhAixcvVr169UoB1LlzZ7Vw4ULVtWvX1DkOopQ7/vjj1bJly/R1HTp00JIUX3788Ud97uKLL1bkPLFJMEyoSZMmivQC7GH/2muv2WwilbaCzRu///579d133ym2tLZNX3/9tdpzzz1Vo0aNdNXnnHOOzqljs51169bp6po2baq34mbH25kzZ9psQpkI+Pr16+tcPWzp7QIv6j3ggANUw4YNdf9PO+20rOqDQgfIjsGsBjbffHP9+dBDD6mnnnqq0OoyXmcyLDRo0EDj9emnnzrBi2dz55131mOhI6hUcpEXBkSnmCiGOF6yZIn5mvqMUq5bt27q22+/1ddsvfXWqQGSxIu956MSSaZIS2FuTNTrevfurVasWBGpOKkIYFhx0ni0bNlSM4cBAwZEaoOJy1hIFxE1907btm0VCaNc40Wf+vbtm7pf+QZUCF5bbbWVZnIm/0y+NgrBa8cdd9QMyCVezBMe1iOPPFKvEPKNg9/Bi784qUJgcrvvvnu17dFztVUIXh07dkw9l/meLy8MCHDDHQGwTBnmopQ788wzq+G1dOlS/Z0bceqpp1b7LdeXxo0b6wd29erVuYpV+w1GcsQRR1Q7l+sLGRR545g+5iqb/tsuu+ySfirjd8bdvHlztWrVqtRNz1gww8k4eCH9cd+QzKISktwxxxwTtbhmivXq1VNIHXEIJoRUHYWYY82aNVPffPONisq0TL1x8OJBh6GsWbPGXJ73k7InnHBC3nKmANIyz1HUF6K5Dsk0ffVhfkv/JHsi5VeuXBnrRWrGTcbKXORFB8QAeEAMccykSaeo5dKvk++CgCBQnAh4YUA9evRQ06dP13oaOOmcOXNUp06dNGJ85w/KVU4XkH+CgCBQUgh4WYKhHJw9e7bWObBkQL/Rpk0bDeS4ceO0Um/YsGFaKZatXEmhLoMRBAQBjYAXBoSStLKyUqHtZ83Kd0PDhw83h/p8tnKpQnIgCAgCJYPA/ziBhyGhNItCUctFqUvKCAKCQO1F4GeB6baq9nYvf8/waymEMOVjYsRK5Yrw7Ebqw+riirAuYtFhHPksDkn6gLUQydXlywF/K/4wRrgigxd+PS73X8PQQv1Y9VwRVkb837BQuiIsv9x7/MYK2U8MDHI+YzCgcqTf//73VWeccYbToQcOZVXbb7+90zYC3yndxt/+9jen7fTv378qWC47bePOO++sCowTTtsInF01XoGu0Wk7hxxySNXll1/utI0bbrihau+993baxttvv63xeuutt5y048UK5oo7S72CgCBQ3AgIAyru+ye9FwSKGoGfjw6oqEdQYOfxiCU6v127dgXWkP8ydEw4XJJ+xCXhcR2O73LRFnjhnW3cJ1y0gYtGixYtIns1F9IH7gl6GfAKhwcVUleua9CXEZLQqlWrXMUS/cY9of5dd901UT25LjZ6UuawC31W0Suhc4EnvwkCgkDtRkCWYLX7/kjvBIGSRkAYUEnfXhmcIFC7EfDqiFgbocCPYtGiRU7X0YybNohaN3llCsWC0BXyJmUj9DRRU3lkqyPX+WLDKzwWovkDW7JOkfLqq69q3xZyStkmfJnQy3GfyISAvsmljxb9tzW/wlj4wKvsJSByEF1wwQVh3J0c/+lPf1J///vfE9eNwnG//fbT6RTeffdd7YRGwqzA30h98skniRlcvg4WG15mPDhrHn300eqDDz5Q48eP14nsLr30UjVr1ixTxMrnZZddpu677z59LwI/M/Xggw+qK6+80krduSqxNb9MG77w4o1QVhR4dtYYbwB2jXNJTmRqI/CKrgo8V5NUW+3aIK921d13313tHE5jI0eOrHauGL74wOvxxx9P4RVIiFXz58+vCqSGqhEjRliDKPDKrwry+VQFeYaq7rrrriocBaEgkVlVIBVZa6dU8AKQspKAcClPl3aCm6lI82pSupo3QJJP0pwihofppptuUi+88EL4VKJjTNYm9ampiERemRK9md8L+aSNwMtaX0rYy2OPPRY78Vm+dn3gRSI1XCI+++wzHR6DJAmG4cDofP3M9zttEHZDyAJZHfbdd199CeEImLNtUangBR5loQMiM10QeqHX4wHTTU0MMyHQm9jII33zzTerKVOm6HzF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" /><!-- --></p>
 </div>
 </div>

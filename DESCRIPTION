@@ -1,8 +1,8 @@
 Package: matsindf
 Type: Package
 Title: Matrices in Data Frames
-Version: 0.4.5
-Date: 2023-12-01
+Version: 0.4.6
+Date: 2023-12-09
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      comment = c(ORCID = "0000-0002-7438-214X"),
                      email = "matthew.heun@me.com"))
@@ -21,10 +21,11 @@ Suggests: covr, ggplot2, Hmisc, knitr, RCLabels, rmarkdown, spelling,
         testthat
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://github.com/MatthewHeun/matsindf
+URL: https://github.com/MatthewHeun/matsindf,
+        https://matthewheun.github.io/matsindf/
 BugReports: https://github.com/MatthewHeun/matsindf/issues
 NeedsCompilation: no
-Packaged: 2023-12-02 01:15:49 UTC; mkh2
+Packaged: 2023-12-10 02:12:28 UTC; mkh2
 Author: Matthew Heun [aut, cre] (<https://orcid.org/0000-0002-7438-214X>)
 Repository: CRAN
-Date/Publication: 2023-12-02 05:00:02 UTC
+Date/Publication: 2023-12-10 03:20:03 UTC

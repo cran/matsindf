@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matthew Kuperus Heun" />
 
-<meta name="date" content="2023-12-09" />
+<meta name="date" content="2023-12-21" />
 
 <title>Use Cases and Examples for matsindf</title>
 
@@ -362,7 +362,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Use Cases and Examples for matsindf</h1>
 <h4 class="author">Matthew Kuperus Heun</h4>
-<h4 class="date">2023-12-09</h4>
+<h4 class="date">2023-12-21</h4>
 
 
 
@@ -402,19 +402,20 @@ following table.</p>
 calculations, thereby simplifying the work of analysts who study entire
 systems.</p>
 <p>But <a href="https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice">wouldn’t it
-be nice</a> if there were an easy way to create data frames whose
-entries were not numbers but entire matrices? If that were possible,
-matrix algebra could be performed on columns of similar matrices.</p>
+be nice</a> if there were an easy way to create <code>R</code> data
+frames whose entries were not numbers but entire matrices? If that were
+possible, matrix algebra could be performed on columns of similar
+matrices.</p>
 <p>That’s the reason for <code>matsindf</code>. It provides functions to
 convert a suitably-formatted <a href="https://tidyr.tidyverse.org/articles/tidy-data.html">tidy</a> data
 frame into a data frame containing a column of matrices.</p>
-<p>Furthermore, <code>matsbyname</code> is a sister package that …</p>
+<p>Furthermore, <code>matsbyname</code> is a sister package that</p>
 <ul>
-<li>… provides matrix algebra functions that respect names of matrix
-rows and columns (<code>dimnames</code> in <code>R</code>) to free the
+<li>provides matrix algebra functions that respect names of matrix rows
+and columns (<code>dimnames</code> in <code>R</code>) to free the
 analyst from the task of aligning rows and columns of operands
 (matrices) passed to matrix algebra functions and</li>
-<li>… allows matrix algebra to be conducted within data frames using <a href="https://dplyr.tidyverse.org">dplyr</a>, <a href="https://tidyr.tidyverse.org">tidyr</a>, and other <a href="https://www.tidyverse.org">tidyverse</a> functions.</li>
+<li>allows matrix algebra to be conducted within data frames using <a href="https://dplyr.tidyverse.org">dplyr</a>, <a href="https://tidyr.tidyverse.org">tidyr</a>, and other <a href="https://www.tidyverse.org">tidyverse</a> functions.</li>
 </ul>
 <p>When used together, <code>matsindf</code> and <code>matsbyname</code>
 allow analysts to wield simultaneously the power of both <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)">matrix

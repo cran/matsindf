@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matthew Kuperus Heun" />
 
-<meta name="date" content="2023-12-21" />
+<meta name="date" content="2024-01-31" />
 
 <title>Use Cases and Examples for matsindf</title>
 
@@ -362,7 +362,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Use Cases and Examples for matsindf</h1>
 <h4 class="author">Matthew Kuperus Heun</h4>
-<h4 class="date">2023-12-21</h4>
+<h4 class="date">2024-01-31</h4>
 
 
 
@@ -584,83 +584,83 @@ in the output, in this case <code>Country</code> and
 <span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co"># To access one of the matrices, try one of these approaches:</span></span>
 <span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>(EnergyMats_2000 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(matrix.name <span class="sc">==</span> <span class="st">&quot;U&quot;</span>))[[<span class="st">&quot;matrix&quot;</span>]] <span class="co"># The U matrix</span></span>
 <span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;                Crude dist. Diesel dist. Elect. grid Gas wells &amp; proc. NG dist.</span></span>
-<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; Crude                    0            0           0                 0        0</span></span>
-<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; Crude - Dist.            0            0           0                 0        0</span></span>
-<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; Crude - Fields       47500            0           0                 0        0</span></span>
-<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt; Diesel                   0        15500           0                 0        0</span></span>
-<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.          25            0           0                50       25</span></span>
-<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt; Elect                    0            0        6400                 0        0</span></span>
-<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt; Elect - Grid            25            0           0                25       25</span></span>
-<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; NG                       0            0           0             43000        0</span></span>
-<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; NG - Dist.               0            0           0                 0        0</span></span>
-<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; NG - Wells               0            0           0                 0    41000</span></span>
-<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; Petrol                   0            0           0                 0        0</span></span>
-<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt;                Oil fields Oil refineries Petrol dist. Power plants</span></span>
-<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; Crude               50000              0            0            0</span></span>
-<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; Crude - Dist.           0          47000            0            0</span></span>
-<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; Crude - Fields          0              0            0            0</span></span>
-<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; Diesel                  0              0            0            0</span></span>
-<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.         50              0          250            0</span></span>
-<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; Elect                   0              0            0            0</span></span>
-<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="co">#&gt; Elect - Grid           25             75            0          100</span></span>
-<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="co">#&gt; NG                      0              0            0            0</span></span>
-<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; NG - Dist.              0              0            0        16000</span></span>
-<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="co">#&gt; NG - Wells              0              0            0            0</span></span>
-<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="co">#&gt; Petrol                  0              0        26500            0</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;                Oil fields Oil refineries Crude dist. Diesel dist.</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; Crude               50000              0           0            0</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; Crude - Dist.           0          47000           0            0</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; Crude - Fields          0              0       47500            0</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt; Diesel                  0              0           0        15500</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.         50              0          25            0</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt; Elect                   0              0           0            0</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt; Elect - Grid           25             75          25            0</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; NG                      0              0           0            0</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; NG - Dist.              0              0           0            0</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; NG - Wells              0              0           0            0</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; Petrol                  0              0           0            0</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt;                Gas wells &amp; proc. NG dist. Petrol dist. Elect. grid Power plants</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; Crude                          0        0            0           0            0</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; Crude - Dist.                  0        0            0           0            0</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; Crude - Fields                 0        0            0           0            0</span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; Diesel                         0        0            0           0            0</span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.                50       25          250           0            0</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; Elect                          0        0            0        6400            0</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="co">#&gt; Elect - Grid                  25       25            0           0          100</span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="co">#&gt; NG                         43000        0            0           0            0</span></span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; NG - Dist.                     0        0            0           0        16000</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="co">#&gt; NG - Wells                     0    41000            0           0            0</span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="co">#&gt; Petrol                         0        0        26500           0            0</span></span>
 <span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
 <span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Product&quot;</span></span>
 <span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
 <span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Industry&quot;</span></span>
 <span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a></span>
 <span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a>EnergyMats_2000<span class="sc">$</span>matrix[[<span class="dv">2</span>]] <span class="co"># The V matrix</span></span>
-<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a><span class="co">#&gt;                   Crude Crude - Dist. Crude - Fields Diesel Diesel - Dist.</span></span>
-<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a><span class="co">#&gt; Crude dist.           0         47000              0      0              0</span></span>
-<span id="cb3-52"><a href="#cb3-52" tabindex="-1"></a><span class="co">#&gt; Diesel dist.          0             0              0      0          15150</span></span>
-<span id="cb3-53"><a href="#cb3-53" tabindex="-1"></a><span class="co">#&gt; Elect. grid           0             0              0      0              0</span></span>
-<span id="cb3-54"><a href="#cb3-54" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.     0             0              0      0              0</span></span>
-<span id="cb3-55"><a href="#cb3-55" tabindex="-1"></a><span class="co">#&gt; NG dist.              0             0              0      0              0</span></span>
-<span id="cb3-56"><a href="#cb3-56" tabindex="-1"></a><span class="co">#&gt; Oil fields            0             0          47500      0              0</span></span>
-<span id="cb3-57"><a href="#cb3-57" tabindex="-1"></a><span class="co">#&gt; Oil refineries        0             0              0  15500              0</span></span>
-<span id="cb3-58"><a href="#cb3-58" tabindex="-1"></a><span class="co">#&gt; Petrol dist.          0             0              0      0              0</span></span>
-<span id="cb3-59"><a href="#cb3-59" tabindex="-1"></a><span class="co">#&gt; Power plants          0             0              0      0              0</span></span>
-<span id="cb3-60"><a href="#cb3-60" tabindex="-1"></a><span class="co">#&gt; Resources - Crude 50000             0              0      0              0</span></span>
-<span id="cb3-61"><a href="#cb3-61" tabindex="-1"></a><span class="co">#&gt; Resources - NG        0             0              0      0              0</span></span>
-<span id="cb3-62"><a href="#cb3-62" tabindex="-1"></a><span class="co">#&gt;                   Elect Elect - Grid    NG NG - Dist. NG - Wells Petrol</span></span>
-<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a><span class="co">#&gt; Crude dist.           0            0     0          0          0      0</span></span>
-<span id="cb3-64"><a href="#cb3-64" tabindex="-1"></a><span class="co">#&gt; Diesel dist.          0            0     0          0          0      0</span></span>
-<span id="cb3-65"><a href="#cb3-65" tabindex="-1"></a><span class="co">#&gt; Elect. grid           0         6275     0          0          0      0</span></span>
-<span id="cb3-66"><a href="#cb3-66" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.     0            0     0          0      41000      0</span></span>
-<span id="cb3-67"><a href="#cb3-67" tabindex="-1"></a><span class="co">#&gt; NG dist.              0            0     0      41000          0      0</span></span>
-<span id="cb3-68"><a href="#cb3-68" tabindex="-1"></a><span class="co">#&gt; Oil fields            0            0     0          0          0      0</span></span>
-<span id="cb3-69"><a href="#cb3-69" tabindex="-1"></a><span class="co">#&gt; Oil refineries        0            0     0          0          0  26500</span></span>
-<span id="cb3-70"><a href="#cb3-70" tabindex="-1"></a><span class="co">#&gt; Petrol dist.          0            0     0          0          0      0</span></span>
-<span id="cb3-71"><a href="#cb3-71" tabindex="-1"></a><span class="co">#&gt; Power plants       6400            0     0          0          0      0</span></span>
-<span id="cb3-72"><a href="#cb3-72" tabindex="-1"></a><span class="co">#&gt; Resources - Crude     0            0     0          0          0      0</span></span>
-<span id="cb3-73"><a href="#cb3-73" tabindex="-1"></a><span class="co">#&gt; Resources - NG        0            0 43000          0          0      0</span></span>
-<span id="cb3-74"><a href="#cb3-74" tabindex="-1"></a><span class="co">#&gt;                   Petrol - Dist.</span></span>
-<span id="cb3-75"><a href="#cb3-75" tabindex="-1"></a><span class="co">#&gt; Crude dist.                    0</span></span>
-<span id="cb3-76"><a href="#cb3-76" tabindex="-1"></a><span class="co">#&gt; Diesel dist.                   0</span></span>
-<span id="cb3-77"><a href="#cb3-77" tabindex="-1"></a><span class="co">#&gt; Elect. grid                    0</span></span>
-<span id="cb3-78"><a href="#cb3-78" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.              0</span></span>
-<span id="cb3-79"><a href="#cb3-79" tabindex="-1"></a><span class="co">#&gt; NG dist.                       0</span></span>
-<span id="cb3-80"><a href="#cb3-80" tabindex="-1"></a><span class="co">#&gt; Oil fields                     0</span></span>
-<span id="cb3-81"><a href="#cb3-81" tabindex="-1"></a><span class="co">#&gt; Oil refineries                 0</span></span>
-<span id="cb3-82"><a href="#cb3-82" tabindex="-1"></a><span class="co">#&gt; Petrol dist.               26000</span></span>
-<span id="cb3-83"><a href="#cb3-83" tabindex="-1"></a><span class="co">#&gt; Power plants                   0</span></span>
-<span id="cb3-84"><a href="#cb3-84" tabindex="-1"></a><span class="co">#&gt; Resources - Crude              0</span></span>
-<span id="cb3-85"><a href="#cb3-85" tabindex="-1"></a><span class="co">#&gt; Resources - NG                 0</span></span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a><span class="co">#&gt;                   Crude - Dist. Diesel - Dist. Elect - Grid NG - Wells</span></span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a><span class="co">#&gt; Crude dist.               47000              0            0          0</span></span>
+<span id="cb3-52"><a href="#cb3-52" tabindex="-1"></a><span class="co">#&gt; Diesel dist.                  0          15150            0          0</span></span>
+<span id="cb3-53"><a href="#cb3-53" tabindex="-1"></a><span class="co">#&gt; Elect. grid                   0              0         6275          0</span></span>
+<span id="cb3-54"><a href="#cb3-54" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.             0              0            0      41000</span></span>
+<span id="cb3-55"><a href="#cb3-55" tabindex="-1"></a><span class="co">#&gt; NG dist.                      0              0            0          0</span></span>
+<span id="cb3-56"><a href="#cb3-56" tabindex="-1"></a><span class="co">#&gt; Oil fields                    0              0            0          0</span></span>
+<span id="cb3-57"><a href="#cb3-57" tabindex="-1"></a><span class="co">#&gt; Oil refineries                0              0            0          0</span></span>
+<span id="cb3-58"><a href="#cb3-58" tabindex="-1"></a><span class="co">#&gt; Petrol dist.                  0              0            0          0</span></span>
+<span id="cb3-59"><a href="#cb3-59" tabindex="-1"></a><span class="co">#&gt; Power plants                  0              0            0          0</span></span>
+<span id="cb3-60"><a href="#cb3-60" tabindex="-1"></a><span class="co">#&gt; Resources - Crude             0              0            0          0</span></span>
+<span id="cb3-61"><a href="#cb3-61" tabindex="-1"></a><span class="co">#&gt; Resources - NG                0              0            0          0</span></span>
+<span id="cb3-62"><a href="#cb3-62" tabindex="-1"></a><span class="co">#&gt;                   NG - Dist. Crude - Fields Diesel Petrol Petrol - Dist. Elect</span></span>
+<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a><span class="co">#&gt; Crude dist.                0              0      0      0              0     0</span></span>
+<span id="cb3-64"><a href="#cb3-64" tabindex="-1"></a><span class="co">#&gt; Diesel dist.               0              0      0      0              0     0</span></span>
+<span id="cb3-65"><a href="#cb3-65" tabindex="-1"></a><span class="co">#&gt; Elect. grid                0              0      0      0              0     0</span></span>
+<span id="cb3-66"><a href="#cb3-66" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.          0              0      0      0              0     0</span></span>
+<span id="cb3-67"><a href="#cb3-67" tabindex="-1"></a><span class="co">#&gt; NG dist.               41000              0      0      0              0     0</span></span>
+<span id="cb3-68"><a href="#cb3-68" tabindex="-1"></a><span class="co">#&gt; Oil fields                 0          47500      0      0              0     0</span></span>
+<span id="cb3-69"><a href="#cb3-69" tabindex="-1"></a><span class="co">#&gt; Oil refineries             0              0  15500  26500              0     0</span></span>
+<span id="cb3-70"><a href="#cb3-70" tabindex="-1"></a><span class="co">#&gt; Petrol dist.               0              0      0      0          26000     0</span></span>
+<span id="cb3-71"><a href="#cb3-71" tabindex="-1"></a><span class="co">#&gt; Power plants               0              0      0      0              0  6400</span></span>
+<span id="cb3-72"><a href="#cb3-72" tabindex="-1"></a><span class="co">#&gt; Resources - Crude          0              0      0      0              0     0</span></span>
+<span id="cb3-73"><a href="#cb3-73" tabindex="-1"></a><span class="co">#&gt; Resources - NG             0              0      0      0              0     0</span></span>
+<span id="cb3-74"><a href="#cb3-74" tabindex="-1"></a><span class="co">#&gt;                   Crude    NG</span></span>
+<span id="cb3-75"><a href="#cb3-75" tabindex="-1"></a><span class="co">#&gt; Crude dist.           0     0</span></span>
+<span id="cb3-76"><a href="#cb3-76" tabindex="-1"></a><span class="co">#&gt; Diesel dist.          0     0</span></span>
+<span id="cb3-77"><a href="#cb3-77" tabindex="-1"></a><span class="co">#&gt; Elect. grid           0     0</span></span>
+<span id="cb3-78"><a href="#cb3-78" tabindex="-1"></a><span class="co">#&gt; Gas wells &amp; proc.     0     0</span></span>
+<span id="cb3-79"><a href="#cb3-79" tabindex="-1"></a><span class="co">#&gt; NG dist.              0     0</span></span>
+<span id="cb3-80"><a href="#cb3-80" tabindex="-1"></a><span class="co">#&gt; Oil fields            0     0</span></span>
+<span id="cb3-81"><a href="#cb3-81" tabindex="-1"></a><span class="co">#&gt; Oil refineries        0     0</span></span>
+<span id="cb3-82"><a href="#cb3-82" tabindex="-1"></a><span class="co">#&gt; Petrol dist.          0     0</span></span>
+<span id="cb3-83"><a href="#cb3-83" tabindex="-1"></a><span class="co">#&gt; Power plants          0     0</span></span>
+<span id="cb3-84"><a href="#cb3-84" tabindex="-1"></a><span class="co">#&gt; Resources - Crude 50000     0</span></span>
+<span id="cb3-85"><a href="#cb3-85" tabindex="-1"></a><span class="co">#&gt; Resources - NG        0 43000</span></span>
 <span id="cb3-86"><a href="#cb3-86" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
 <span id="cb3-87"><a href="#cb3-87" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Industry&quot;</span></span>
 <span id="cb3-88"><a href="#cb3-88" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>
 <span id="cb3-89"><a href="#cb3-89" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Product&quot;</span></span>
 <span id="cb3-90"><a href="#cb3-90" tabindex="-1"></a></span>
 <span id="cb3-91"><a href="#cb3-91" tabindex="-1"></a>EnergyMats_2000<span class="sc">$</span>matrix[[<span class="dv">3</span>]] <span class="co"># The Y matrix</span></span>
-<span id="cb3-92"><a href="#cb3-92" tabindex="-1"></a><span class="co">#&gt;                Residential Transport</span></span>
-<span id="cb3-93"><a href="#cb3-93" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.           0     14750</span></span>
-<span id="cb3-94"><a href="#cb3-94" tabindex="-1"></a><span class="co">#&gt; Elect - Grid          6000         0</span></span>
-<span id="cb3-95"><a href="#cb3-95" tabindex="-1"></a><span class="co">#&gt; NG - Dist.           25000         0</span></span>
-<span id="cb3-96"><a href="#cb3-96" tabindex="-1"></a><span class="co">#&gt; Petrol - Dist.           0     26000</span></span>
+<span id="cb3-92"><a href="#cb3-92" tabindex="-1"></a><span class="co">#&gt;                Transport Residential</span></span>
+<span id="cb3-93"><a href="#cb3-93" tabindex="-1"></a><span class="co">#&gt; Diesel - Dist.     14750           0</span></span>
+<span id="cb3-94"><a href="#cb3-94" tabindex="-1"></a><span class="co">#&gt; Elect - Grid           0        6000</span></span>
+<span id="cb3-95"><a href="#cb3-95" tabindex="-1"></a><span class="co">#&gt; NG - Dist.             0       25000</span></span>
+<span id="cb3-96"><a href="#cb3-96" tabindex="-1"></a><span class="co">#&gt; Petrol - Dist.     26000           0</span></span>
 <span id="cb3-97"><a href="#cb3-97" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;rowtype&quot;)</span></span>
 <span id="cb3-98"><a href="#cb3-98" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Product&quot;</span></span>
 <span id="cb3-99"><a href="#cb3-99" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;coltype&quot;)</span></span>

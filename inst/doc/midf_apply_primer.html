@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matthew Kuperus Heun" />
 
-<meta name="date" content="2024-01-31" />
+<meta name="date" content="2025-05-24" />
 
 <title>A matsindf_apply primer</title>
 
@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -62,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">A matsindf_apply primer</h1>
 <h4 class="author">Matthew Kuperus Heun</h4>
-<h4 class="date">2024-01-31</h4>
+<h4 class="date">2025-05-24</h4>
 
 
 
@@ -407,7 +407,7 @@ that indicates the missing argument.</p>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; the following named arguments to FUN were not found in any of .dat, ..., or</span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; defaults to FUN: b. Set .warn_missing_FUN_args = FALSE to suppress this warning</span></span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; if you know what you are doing.</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; &lt;simpleError in (function (a, b) {    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a,         b)))})(a = 2): argument &quot;b&quot; is missing, with no default&gt;</span></span></code></pre></div>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; &lt;getvarError in (function (a, b) {    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a,         b)))})(a = 2): argument &quot;b&quot; is missing, with no default&gt;</span></span></code></pre></div>
 <p>Alternatively, arguments to <code>FUN</code> can be given in a named
 list to <code>.dat</code>, the first argument of
 <code>matsindf_apply()</code>. When a value is assigned to
@@ -517,7 +517,7 @@ below.</p>
 <span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; the following named arguments to FUN were not found in any of .dat, ..., or</span></span>
 <span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; defaults to FUN: str_a. Set .warn_missing_FUN_args = FALSE to suppress this</span></span>
 <span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; warning if you know what you are doing.</span></span>
-<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; &lt;simpleError in (function (str_a, b) {    a &lt;- as.numeric(str_a)    list(added = matsbyname::sum_byname(a, b), subtracted = matsbyname::difference_byname(a,         b))})(b = 2): argument &quot;str_a&quot; is missing, with no default&gt;</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; &lt;evalError in (function (str_a, b) {    a &lt;- as.numeric(str_a)    list(added = matsbyname::sum_byname(a, b), subtracted = matsbyname::difference_byname(a,         b))})(b = 2): argument &quot;str_a&quot; is missing, with no default&gt;</span></span>
 <span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co"># To solve the problem, wrap &quot;1&quot; in list().</span></span>
 <span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="fu">matsindf_apply</span>(<span class="at">FUN =</span> example_fun_with_string, <span class="at">str_a =</span> <span class="fu">list</span>(<span class="st">&quot;1&quot;</span>), <span class="at">b =</span> <span class="dv">2</span>)</span>
 <span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; $added</span></span>
